@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'finka.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': BASE_DIR / 'mydatabase',
+        'NAME': str(BASE_DIR / 'mydatabase'),
     }
 }
 
