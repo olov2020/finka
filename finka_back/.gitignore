@@ -1,0 +1,6 @@
+.idea/
+venv/
+finka/__pycache__/
+.DS_Store
+.vscode/
+.history/
