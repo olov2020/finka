@@ -1,6 +1,5 @@
 import {Text, View, Button} from "react-native";
 import React from "react";
-import RegistrationScreen from "./registration/RegistrationScreen";
 
 const AccountScreen = ({navigation}: { navigation: any }) => {
     return (
