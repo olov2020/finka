@@ -22,3 +22,5 @@ const passwordHandler = ({value}) => {
 
     return 'success';
 }
+
+export default passwordHandler;
