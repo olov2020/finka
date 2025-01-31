@@ -4,11 +4,26 @@ import {userRegistrationApi} from "../../../api/userApi";
 
 const RegistrationScreen = () => {
 
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [registrationData, setRegistrationData] = useState({email: '', password: ''});
+
+    const checkInput = (value: string, type: string) => {
+        switch (type) {
+            case 'email':
+                return emailHandler({value});
+            case 'password':
+                return passwordHandler({value});
+            default:
+                return 'empty';
+        }
+    }
 
     const userRegistrationFunc = async () => {
-        const data = await userRegistrationApi(email, password);
+        Object.entries(registrationData).forEach(([key, value]) => {
+            if (checkInput(value, key) !== 'success') {
+                return;
+            }
+        })
+        const data = await userRegistrationApi(registrationData.email, registrationData.password);
         if (data) {
             alert('Пользователь успешно зарегистрирован!');
         } else {
@@ -19,17 +34,22 @@ const RegistrationScreen = () => {
     return (
         <View>
             <TextInput
+                autoFocus={true}
+                inputMode={"email"}
+                keyboardType={"email-address"}
                 style={styles.input}
-                value={email}
+                value={registrationData.email}
                 placeholder='Введите вашу почту'
-                onChangeText={(text) => setEmail(text)}
+                onChangeText={(inputValue) => setRegistrationData({...registrationData, email: inputValue})}
                 autoCapitalize={"none"}
+
             />
             <TextInput
+                secureTextEntry={true}
                 style={styles.input}
-                value={password}
+                value={registrationData.password}
                 placeholder='Введите ваш пароль'
-                onChangeText={(text) => setPassword(text)}
+                onChangeText={(inputValue) => setRegistrationData({...registrationData, password: inputValue})}
                 autoCapitalize={"none"}
             />
             <Button title='Зарегистрироваться' onPress={userRegistrationFunc}/>
