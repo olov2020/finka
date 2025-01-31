@@ -4,3 +4,5 @@ const emailHandler = ({value}) => {
 
     return emailRegex.test(value) ? 'success' : 'Неверный формат ввода почты';
 }
+
+export default emailHandler;

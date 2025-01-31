@@ -1,6 +1,8 @@
 import {Button, TextInput, View, StyleSheet} from "react-native";
 import {useState} from "react";
 import {userRegistrationApi} from "../../../api/userApi";
+import emailHandler from '../../../formHandler/userFields/emailHandler';
+import passwordHandler from '../../../formHandler/userFields/passwordHandler';
 
 const RegistrationScreen = () => {
 
@@ -17,12 +19,23 @@ const RegistrationScreen = () => {
         }
     }
 
-    const userRegistrationFunc = async () => {
+    const validateRegistrationForm = () => {
         Object.entries(registrationData).forEach(([key, value]) => {
-            if (checkInput(value, key) !== 'success') {
-                return;
+            const message: string = checkInput(value, key);
+            if (message !== 'success') {
+                alert(message);
+                return false;
             }
         })
+
+        return true;
+    }
+
+    const userRegistrationFunc = async () => {
+        if (!validateRegistrationForm()) {
+            return false;
+        }
+
         const data = await userRegistrationApi(registrationData.email, registrationData.password);
         if (data) {
             alert('Пользователь успешно зарегистрирован!');
