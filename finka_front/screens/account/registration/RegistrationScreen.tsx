@@ -11,9 +11,9 @@ const RegistrationScreen = () => {
     const checkInput = (value: string, type: string) => {
         switch (type) {
             case 'email':
-                return emailHandler({value});
+                return emailHandler({value, required: true});
             case 'password':
-                return passwordHandler({value});
+                return passwordHandler({value, required: true});
             default:
                 return 'empty';
         }

@@ -1,5 +1,8 @@
 // @ts-ignore
-const passwordHandler = ({value}) => {
+const passwordHandler = ({value, required}) => {
+    if (value.length === 0 && !required) {
+        return 'success';
+    }
     if (value.length < 8) {
         return "Длина пароля должна быть не менее 8 символов";
     }
