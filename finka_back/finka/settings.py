@@ -21,11 +21,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'users',
     'django.contrib.sites',
-    'allauth',
-    'allauth.account',
-    'djoser',
 ]
 
 SITE_ID = 1
