@@ -34,3 +34,36 @@ def signup(request):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 def test_token(request):
     return Response("passed for {}".format(request.user.email), status=status.HTTP_200_OK)
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+def change_username(request):
+    user = request.user
+    user.username = request.data['username']
+    user.save()
+    return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+def change_email(request):
+    user = request.user
+    user.email = request.data['email']
+    user.save()
+    return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+@authentication_classes([SessionAuthentication, TokenAuthentication])
+def change_password(request):
+    user = request.user
+    new_password = request.data.get("new_password")
+    
+    if not new_password:
+        return Response({"error": "New password is required"}, status=status.HTTP_400_BAD_REQUEST)
+    
+    user.set_password(new_password)
+    user.save()
+    
+    return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK)
