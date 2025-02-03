@@ -45,7 +45,7 @@ const RegistrationScreen = () => {
     }
 
     return (
-        <View>
+        <>
             <TextInput
                 autoFocus={true}
                 inputMode={"email"}
@@ -66,7 +66,7 @@ const RegistrationScreen = () => {
                 autoCapitalize={"none"}
             />
             <Button title='Зарегистрироваться' onPress={userRegistrationFunc}/>
-        </View>
+        </>
     );
 }
 
