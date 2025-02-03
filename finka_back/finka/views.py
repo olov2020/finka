@@ -40,7 +40,7 @@ def test_token(request):
 @authentication_classes([SessionAuthentication, TokenAuthentication])
 def change_username(request):
     user = request.user
-    user.username = request.data['username']
+    user.username = request.data.get('username')
     user.save()
     return Response(UserSerializer(user).data, status=status.HTTP_200_OK)
 
@@ -59,11 +59,8 @@ def change_email(request):
 def change_password(request):
     user = request.user
     new_password = request.data.get("new_password")
-    
     if not new_password:
         return Response({"error": "New password is required"}, status=status.HTTP_400_BAD_REQUEST)
-    
     user.set_password(new_password)
     user.save()
-    
     return Response({"message": "Password updated successfully"}, status=status.HTTP_200_OK)
