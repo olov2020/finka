@@ -29,10 +29,10 @@ services:
     volumes:
       - .:/app
     command: >
-      sh -c "until nc -z db 5432; do echo 'Waiting for database...'; sleep 3; done &&
+      sh -c "mkdir -p /finka_back/static &&
          python manage.py migrate &&
          python manage.py collectstatic --noinput &&
-         gunicorn --bind 0.0.0.0:8000 project.wsgi:application"
+         gunicorn --bind 0.0.0.0:8000 finka.wsgi:application"
 
 volumes:
   postgres_data:
