@@ -5,3 +5,5 @@ user/__pycache__/
 .vscode/
 .history/
 test.rest
+.env
+.idea/
