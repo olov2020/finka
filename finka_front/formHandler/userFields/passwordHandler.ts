@@ -1,5 +1,5 @@
 // @ts-ignore
-const passwordHandler = ({value, required}) => {
+const passwordHandler = ({value, required}): string => {
     if (value.length === 0 && !required) {
         return 'success';
     }
