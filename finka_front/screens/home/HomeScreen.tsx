@@ -5,7 +5,6 @@ const HomeScreen = () => {
     return (
         <View>
             <Text>Home page</Text>
-            <StatusBar style="auto"/>
         </View>
     );
 }
