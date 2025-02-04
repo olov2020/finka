@@ -7,3 +7,4 @@ user/__pycache__/
 test.rest
 .env
 .idea/
+staticfiles/
