@@ -28,6 +28,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/app
+      - static_volume:/finka_back/staticfiles
     command: >
       sh -c "mkdir -p /finka_back/static &&
          python manage.py migrate &&
