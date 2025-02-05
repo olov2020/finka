@@ -1,7 +1,7 @@
 venv/
 finka/__pycache__/
 user/__pycache__/
-.DS_Store
+.DS_Store/
 .vscode/
 .history/
 test.rest
