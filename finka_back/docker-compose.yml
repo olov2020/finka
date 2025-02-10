@@ -13,7 +13,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
     ports:
-      - "5432:5432"
+      - "5436:5432"
 
   web:
     build: .
@@ -22,6 +22,7 @@ services:
     env_file: .env
     environment:
       - DEBUG=True
+      - STATIC_ROOT=/finka_back/staticfiles
     depends_on:
       - db
     ports:
