@@ -5,9 +5,9 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /finka_back
 
-COPY requirements.txt .
+COPY requirements.txt /finka_back/
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY . /finka_back/
 
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "finka.wsgi:application"]
