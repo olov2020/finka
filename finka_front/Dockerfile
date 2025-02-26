@@ -2,7 +2,7 @@ FROM ubuntu:latest
 
 COPY *.json ./
 RUN npm install
-COPY . .
+COPY ../finka_front .
 RUN npm run build
 
 EXPOSE 3000
