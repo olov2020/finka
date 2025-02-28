@@ -1,5 +1,4 @@
-// @ts-ignore
-const emailHandler = ({value, required}): string => {
+export function emailHandler (value: string, required: boolean = true): string {
     if (value.length === 0 && !required) {
         return 'success';
     }
@@ -12,5 +11,3 @@ const emailHandler = ({value, required}): string => {
 
     return emailRegex.test(value) ? 'success' : 'Неверный формат ввода почты';
 }
-
-export default emailHandler;

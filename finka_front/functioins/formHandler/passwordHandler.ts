@@ -1,5 +1,4 @@
-// @ts-ignore
-const passwordHandler = ({value, required}): string => {
+export function passwordHandler (value: string, required: boolean = true): string {
     if (value.length === 0 && !required) {
         return 'success';
     }
@@ -25,5 +24,3 @@ const passwordHandler = ({value, required}): string => {
 
     return 'success';
 }
-
-export default passwordHandler;
