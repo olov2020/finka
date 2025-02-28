@@ -12,25 +12,17 @@ import {passwordHandler} from '@/functioins/formHandler/passwordHandler';
 interface UserData {
     email: string;
     password: string;
-    samePassword: string;
 }
 
 export default function LoginView() {
 
-    const [userData, setUserData] = useState<UserData>({email: '', password: '', samePassword: ''});
+    const [userData, setUserData] = useState<UserData>({email: '', password: ''});
     const [isPasswordVisible, setIsPasswordVisible] = useState(false);
-    const [samePasswordError, setSamePasswordError] = useState<string | null>(null);
 
     const togglePasswordVisibility = () => {
         setIsPasswordVisible(prevState => !prevState);
     };
 
-    const checkSamePassword = (value: string): string => {
-        if (userData.password === value) {
-            return 'success';
-        }
-        return 'Пароли не совпадают';
-    }
 
     const checkDataErrors = (type: string, value: string) => {
         switch (type) {
@@ -38,8 +30,6 @@ export default function LoginView() {
                 return emailHandler(value);
             case 'password':
                 return passwordHandler(value);
-            case 'samePassword':
-                return checkSamePassword(value);
             default:
                 throw new Error(`There is no validation for this type of field ${type}`);
         }
@@ -89,16 +79,6 @@ export default function LoginView() {
                                    value={userData.password}
                                    onChangeText={(text: string) => setUserData({...userData, password: text})}
                         />
-
-                        <Text>Подтвердите пароль</Text>
-                        <TextInput placeholder="********"
-                                   secureTextEntry={!isPasswordVisible}
-                                   value={userData.samePassword}
-                                   onChangeText={(text: string) => setUserData({...userData, samePassword: text})}
-                        />
-                        <Text>{samePasswordError}</Text>
-                        <Button title={isPasswordVisible ? "Скрыть пароль" : "Показать пароль"}
-                                onPress={togglePasswordVisibility}/>
                     </View>
 
                     <Link style={styles.link} href="../forgot-password">
@@ -108,7 +88,7 @@ export default function LoginView() {
                     <Button
                         onPress={loginFunc}
                     >
-                        Login
+                        Войти
                     </Button>
                 </SafeAreaView>
             </ThemedView>

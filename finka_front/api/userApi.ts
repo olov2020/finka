@@ -1,11 +1,12 @@
 import {$authHost, $host} from "./axiosApi";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export const registrationApi = async (email: string, password: string) => {
+export const registrationApi = async (email: string, password: string, username: string) => {
     try {
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
+        formData.append("username", username);
         const response = await $host.post(`/signup/`, formData, {
             headers: {
                 ContentType: "application/json",
