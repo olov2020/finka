@@ -3,7 +3,7 @@ import {ThemedView} from "@/components/ThemedView";
 import {StyleSheet, TextInput, View, Text} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {Button} from "@rneui/themed";
-import {Link} from "expo-router";
+import {Link, router} from "expo-router";
 import {useState} from "react";
 import {loginApi} from "@/api/userApi";
 import {emailHandler} from '@/functioins/formHandler/emailHandler';
@@ -35,7 +35,11 @@ export default function LoginView() {
         }
     }
 
-    const loginFunc = async () => {
+    const loginFunc = () => {
+        router.replace("/(main)/(home)");
+    }
+
+    /*const loginFunc = async () => {
         for (const [key, value] of Object.entries(userData)) {
             try {
                 const error = checkDataErrors(key, value);
@@ -54,7 +58,7 @@ export default function LoginView() {
         } catch (error) {
             alert(error);
         }
-    }
+    }*/
 
     return (
         <SafeAreaProvider>

@@ -11,11 +11,20 @@ export default function MainLayout() {
     const colorScheme = useColorScheme();
     const pathname = usePathname();
     const isHome = pathname === "/";
+    const isAccount = pathname === "/account";
 
     if (Platform.OS === "android") {
         return (
             <GestureHandlerRootView style={{ flex: 1 }}>
                 <Drawer>
+                    <Drawer.Screen
+                        name="(account)"
+                        options={{
+                            drawerLabel: "Account",
+                            title: "Account",
+                            headerShown: isAccount,
+                        }}
+                    />
                     <Drawer.Screen
                         name="(home)"
                         options={{
@@ -42,6 +51,13 @@ export default function MainLayout() {
                 tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
             }}
         >
+            <Tabs.Screen
+                name="(account)"
+                options={{
+                    title: "Account",
+                    headerShown: false,
+                }}
+            />
             <Tabs.Screen
                 name="(home)"
                 options={{
