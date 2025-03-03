@@ -1,5 +1,5 @@
-import {ThemedText} from "@/components/ThemedText";
-import {ThemedView} from "@/components/ThemedView";
+import {ThemedText} from "@/components/others/ThemedText";
+import {ThemedView} from "@/components/others/ThemedView";
 import {StyleSheet, Text, TextInput, View} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {useState} from "react";

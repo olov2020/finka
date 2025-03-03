@@ -41,7 +41,7 @@ export const changeSpendingsByIdApi = async (id: number) => {
     }
 }
 
-export const getSpendingsFromTime1ToTime2Api = async (time1: number, time2: number) => {
+export const getSpendingsFromTime1ToTime2Api = async (time1: string, time2: string) => {
     try {
         const response = await $authHost.get(`/spendings/show/${time1}/${time2}/`);
         return response.data;

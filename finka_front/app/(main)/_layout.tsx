@@ -33,13 +33,6 @@ export default function MainLayout() {
                             headerShown: isHome,
                         }}
                     />
-                    <Drawer.Screen
-                        name="settings"
-                        options={{
-                            drawerLabel: "Settings",
-                            title: "Settings",
-                        }}
-                    />
                 </Drawer>
             </GestureHandlerRootView>
         );
@@ -63,12 +56,6 @@ export default function MainLayout() {
                 options={{
                     title: "Home",
                     headerShown: false,
-                }}
-            />
-            <Tabs.Screen
-                name="settings"
-                options={{
-                    title: "Settings",
                 }}
             />
         </Tabs>

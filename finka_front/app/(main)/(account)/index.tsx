@@ -1,7 +1,7 @@
-import { ThemedView } from "@/components/ThemedView";
+import { ThemedView } from "@/components/others/ThemedView";
 import {SafeAreaView, StyleSheet, View, Text, TextInput} from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import {ThemedText} from "@/components/ThemedText";
+import {ThemedText} from "@/components/others/ThemedText";
 import {usePathname} from "expo-router";
 import {useEffect, useState} from "react";
 import {getAccountDataApi} from "@/api/userApi";
@@ -17,17 +17,24 @@ interface AccountData {
 
 export default function AccountView() {
 
-    const [userData, setUserData] = useState<AccountData | null>(null);
+    const [userData, setUserData] = useState<AccountData | null>({
+        username: 'vova',
+        email: 'vova@gmail.com',
+        name: 'vova',
+        surname: 'vova',
+        age: 20,
+        sex: true,
+    });
     const pathname = usePathname();
 
-    useEffect( () => {
+    /*useEffect( () => {
         const getAccountDataFunc = async() => {
             const data: AccountData = await getAccountDataApi();
             setUserData(data);
         }
 
         getAccountDataFunc();
-    }, [pathname]);
+    }, [pathname]);*/
 
     if (!userData) {
         return null;
@@ -62,7 +69,7 @@ export default function AccountView() {
 
                         <Text>Пол</Text>
                         <TextInput
-                            value={userData.sex}
+                            value={userData.sex ? 'Мужской' : 'Женский'}
                         />
 
                         <Text>Email</Text>

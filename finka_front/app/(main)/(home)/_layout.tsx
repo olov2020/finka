@@ -1,4 +1,4 @@
-import { Stack } from "expo-router";
+import {Stack} from "expo-router";
 import "react-native-reanimated";
 
 export default function HomeLayout() {
@@ -6,13 +6,12 @@ export default function HomeLayout() {
         <Stack>
             <Stack.Screen
                 name="index"
-                options={{ headerTitle: "Home", headerShown: false }}
+                options={{headerTitle: "Home", headerShown: false}}
             />
             <Stack.Screen
-                name="options"
-                options={{ headerTitle: "Options", presentation: "modal" }}
+                name="spendings"
+                options={{headerTitle: "Spendings", headerShown: false}}
             />
-            <Stack.Screen name="details" options={{ headerTitle: "Details" }} />
         </Stack>
     );
 }
