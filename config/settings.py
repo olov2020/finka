@@ -14,15 +14,29 @@ SECRET_KEY = env("SECRET_KEY")
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
+    # Django system connections
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+
+    # REST
+    "rest_framework",
+
+    # Custom apps
     "users",
     "transactions",
 ]
+
+AUTH_USER_MODEL = "users.User"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
