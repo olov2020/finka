@@ -28,6 +28,9 @@ INSTALLED_APPS = [
     # Custom apps
     "users",
     "transactions",
+
+    # Other stuff
+    'drf_yasg',
 ]
 
 AUTH_USER_MODEL = "users.User"
