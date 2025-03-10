@@ -1,9 +1,14 @@
 from rest_framework import generics, status, permissions
 from rest_framework.response import Response
 from .serializers import UserSerializer, ChangePasswordSerializer, UserProfileSerializer, CustomTokenObtainPairSerializer
+from .permissions import IsOwnerOrAdmin
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView
+from rest_framework import viewsets
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 # Представление регистрации пользователя
 class UserRegistrationView(generics.CreateAPIView):
@@ -46,3 +51,15 @@ class ChangePasswordView(APIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response({"message": "Пароль успешно изменен."}, status=status.HTTP_200_OK)
+
+class UserViewSet(viewsets.ModelViewSet):
+    serializer_class = UserSerializer
+    permission_classes = [IsOwnerOrAdmin]
+
+    def get_queryset(self):
+        user = self.request.user
+        # Если пользователь - администратор, возвращаем всех
+        if user.is_superuser:
+            return User.objects.all()
+        # Иначе, возвращаем только текущего пользователя
+        return User.objects.filter(id=user.id)
