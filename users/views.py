@@ -1,7 +1,10 @@
 from rest_framework import generics, status
 from rest_framework.response import Response
 from .serializers import UserSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from .serializers import CustomTokenObtainPairSerializer
 
+# Представление регистрации пользователя
 class UserRegistrationView(generics.CreateAPIView):
     serializer_class = UserSerializer
 
@@ -20,3 +23,7 @@ class UserRegistrationView(generics.CreateAPIView):
                 "date_of_birth": user.date_of_birth
             }
         }, status=status.HTTP_201_CREATED)
+
+# Представление получения токена пользователя для авторизации
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer
