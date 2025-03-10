@@ -28,14 +28,17 @@ class UserManager(BaseUserManager):
 
 # Класс пользователя
 class User(AbstractBaseUser):
-    # Поля пользователя: email, пароль
     email = models.EmailField(unique=True, verbose_name="Email")
+    phone = models.CharField(max_length=16, unique=True, verbose_name="Phone number")
+    first_name = models.CharField(max_length=64, verbose_name="First name")
+    last_name = models.CharField(max_length=64, verbose_name="Last name")
+    date_of_birth = models.DateField(verbose_name="Date of birth", blank=True, null=True)
     password = models.CharField(max_length=128, verbose_name="Password")
 
     objects = UserManager() # Устанавливаем через что создается пользователь
 
     USERNAME_FIELD = 'email' # Меняем логин на email
-    REQUIRED_FIELDS = [] # Поля которые обязательны для заполнения, в данном случае не указываем потому что email - обязательное поле
+    REQUIRED_FIELDS = [first_name, last_name, date_of_birth] # Поля которые обязательны для заполнения, в данном случае не указываем потому что email - обязательное поле
 
     def __str__(self): # Метод для отображения пользователя в админке
         return self.email
