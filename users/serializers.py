@@ -41,3 +41,24 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'phone', 'first_name', 'last_name', 'date_of_birth']
+
+# Сериализатор для изменения пароля пользователя
+class ChangePasswordSerializer(serializers.Serializer):
+    current_password = serializers.CharField(required=True, write_only=True)
+    new_password = serializers.CharField(required=True, write_only=True, min_length=8)
+
+    def validate_current_password(self, value):
+        user = self.context['request'].user
+        if not user.check_password(value):
+            raise serializers.ValidationError("Неверный текущий пароль.")
+        return value
+
+    def validate_new_password(self, value):
+        return value
+
+    def save(self, **kwargs):
+        user = self.context['request'].user
+        new_password = self.validated_data['new_password']
+        user.set_password(new_password)
+        user.save()
+        return user
