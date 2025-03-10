@@ -33,3 +33,11 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['email'] = user.email
         token['phone'] = user.phone
         return token
+
+# Сериализатор для профиля пользователя
+class UserProfileSerializer(serializers.ModelSerializer):
+    email = serializers.EmailField(required=True)
+    
+    class Meta:
+        model = User
+        fields = ['id', 'email', 'phone', 'first_name', 'last_name', 'date_of_birth']
