@@ -12,7 +12,7 @@ schema_view = get_schema_view(
     openapi.Info(
         title="Finka API",
         default_version='v1',
-        description="Документация API для проекта Finka",
+        description="Документация API для приложения Finka",
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
