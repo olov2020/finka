@@ -1,6 +1,10 @@
-from django.urls import path
-from .views import TransactionCreateView
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from .views import TransactionViewSet
+
+router = DefaultRouter()
+router.register(r'', TransactionViewSet, basename='transactions')
 
 urlpatterns = [
-    path('add/', TransactionCreateView.as_view(), name='transaction-add'),
+    path('', include(router.urls)),
 ]
