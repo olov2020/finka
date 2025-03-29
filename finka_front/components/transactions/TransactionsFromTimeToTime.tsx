@@ -1,15 +1,17 @@
 import {View, Text, TextInput, StyleSheet} from "react-native";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {format} from 'date-fns';
 import BlankCard from "@/components/common/BlankCard";
 import { TextInputMask } from 'react-native-masked-text';
+import {titleTextStyle} from '@/constants/styles';
+import {input} from "sucrase/dist/types/parser/traverser/base";
 
-type TransactionsFromTimeToTimeProps = {
+interface TransactionsFromTimeToTimeProps {
     transactionApi: (time1: string, time2: string) => {};
     title: string;
 }
 
-type Dates = {
+interface Dates {
     time1: string;
     time2: string;
 }
@@ -23,22 +25,18 @@ export default function TransactionsFromTimeToTime({transactionApi, title}: Tran
         time1: format(firstDateOfMonth, 'dd.MM.yyyy'),
         time2: format(currentDate, 'dd.MM.yyyy'),
     });
-    const [error, setError] = useState({
-        time1: '',
-        time2: '',
-    });
 
-    const handleDateChange = (value: string, type: string) => {
-        if (new Date(value) > currentDate) {
-            value = currentDate;
+    useEffect(() => {
+        if (new Date(inputDates.time1) > currentDate) {
+            setInputDates({...inputDates, time1: currentDate});
         }
-    }
+    }, [inputDates]);
 
     // TODO
     // write date handler to check the actual date
     return (
         <BlankCard>
-            <Text>{title}</Text>
+            <Text style={titleTextStyle.title}>{title}</Text>
             <View style={styles.container}>
                 <Text>С</Text>
                 <TextInputMask

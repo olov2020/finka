@@ -1,9 +1,13 @@
-import {StyleSheet, View} from "react-native";
-import {PropsWithChildren} from "react";
+import React from 'react';
+import { StyleSheet, View, type ViewProps } from 'react-native';
 
-export default function BlankCard({children}: PropsWithChildren) {
+type BlankCardProps = ViewProps & {
+    flex?: number;
+};
+
+export default function BlankCard({ children, flex, ...props }: BlankCardProps) {
     return (
-        <View style={styles.view}>
+        <View style={[styles.view, { flex }]} {...props}>
             {children}
         </View>
     );
@@ -11,11 +15,15 @@ export default function BlankCard({children}: PropsWithChildren) {
 
 const styles = StyleSheet.create({
     view: {
-        width: '95%',
-        gap: 16,
+        width: '100%',
+        gap: 20,
         backgroundColor: 'white',
-        boxShadow: '4px 10px 36 0 rgba(0, 0, 0, 0.1)',
         borderRadius: 10,
         padding: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 4, height: 10 },
+        shadowOpacity: 0.1,
+        shadowRadius: 36,
+        elevation: 5, // For Android
     },
 });

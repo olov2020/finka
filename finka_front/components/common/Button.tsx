@@ -1,20 +1,19 @@
 import {TouchableOpacity, Text, StyleSheet} from 'react-native';
 import BlankCard from "@/components/common/BlankCard";
+import {ReactElement} from "react";
 
-type AddTransactionButtonProps = {
+interface AddTransactionButtonProps {
     title: string;
+    icon?: ReactElement;
     onPress: () => void;
 }
 
-export default function AddTransactionButton({title, onPress}: AddTransactionButtonProps) {
-
-    // TODO
-    // style component and add image of plus (after redesign)
+export default function Button({title, icon, onPress}: AddTransactionButtonProps) {
     return (
         <BlankCard>
             <TouchableOpacity onPress={onPress} style={styles.button}>
                 <Text>{title}</Text>
-                <Text>+</Text>
+                {icon}
             </TouchableOpacity>
         </BlankCard>
     );

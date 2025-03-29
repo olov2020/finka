@@ -8,5 +8,6 @@ export const safeAreaViewStyle = StyleSheet.create({
         gap: 16,
         backgroundColor: 'pink',
         alignItems: 'center',
+        padding: 12,
     }
 });

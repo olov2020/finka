@@ -1,7 +1,6 @@
-import {StyleSheet, View} from "react-native";
-import {PropsWithChildren} from "react";
+import {StyleSheet, View, ViewProps} from "react-native";
 
-export default function Layout({children}: PropsWithChildren) {
+export default function Layout({children}: ViewProps) {
     return (
         <View style={styles.view}>
             {children}
