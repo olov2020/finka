@@ -1,7 +1,6 @@
-import { ThemedView } from "@/components/others/ThemedView";
+import { ThemedView } from "@/components/common/ThemedView";
 import {SafeAreaView, StyleSheet, View, Text, TextInput} from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import {ThemedText} from "@/components/others/ThemedText";
 import {usePathname} from "expo-router";
 import {useEffect, useState} from "react";
 import {getAccountDataApi} from "@/api/userApi";
@@ -44,7 +43,7 @@ export default function AccountView() {
         <SafeAreaProvider>
             <ThemedView style={styles.container}>
                 <SafeAreaView style={styles.innerContainer}>
-                    <ThemedText type="title">Личный аккаунт</ThemedText>
+                    <Text>Личный аккаунт</Text>
 
                     <View>
                         <Text>Никнейм</Text>

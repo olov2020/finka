@@ -9,7 +9,7 @@ export default function HomeLayout() {
                 options={{headerTitle: "Home", headerShown: false}}
             />
             <Stack.Screen
-                name="spendings"
+                name="(spendings)"
                 options={{headerTitle: "Spendings", headerShown: false}}
             />
         </Stack>

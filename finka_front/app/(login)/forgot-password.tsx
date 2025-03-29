@@ -1,6 +1,5 @@
-import { ThemedText } from "@/components/others/ThemedText";
-import { ThemedView } from "@/components/others/ThemedView";
-import { StyleSheet } from "react-native";
+import { ThemedView } from "@/components/common/ThemedView";
+import { StyleSheet, Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Link } from "expo-router";
 
@@ -9,7 +8,7 @@ export default function ForgotPasswordView() {
         <SafeAreaProvider>
             <ThemedView style={styles.container}>
                 <SafeAreaView style={styles.innerContainer}>
-                    <ThemedText type="title">Forgot password view</ThemedText>
+                    <Text>Forgot password view</Text>
 
                     <Link style={styles.link} href="/(login)/(auth)">
                         Back to Login

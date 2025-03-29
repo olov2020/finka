@@ -1,7 +1,6 @@
-import { ThemedText } from "@/components/others/ThemedText";
-import { ThemedView } from "@/components/others/ThemedView";
+import { ThemedView } from "@/components/common/ThemedView";
 import { Link } from "expo-router";
-import { StyleSheet } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeView() {
@@ -9,10 +8,13 @@ export default function HomeView() {
         <SafeAreaProvider>
             <ThemedView style={styles.container}>
                 <SafeAreaView style={styles.innerContainer}>
-                    <ThemedText type="title">Home view</ThemedText>
+                    <Text>Home view</Text>
 
-                    <Link style={styles.link} href="./spendings">
+                    <Link style={styles.link} href="./(spendings)">
                         Траты
+                    </Link>
+                    <Link style={styles.link} href="/(main)/(account)">
+                        Аккаунт
                     </Link>
                 </SafeAreaView>
             </ThemedView>

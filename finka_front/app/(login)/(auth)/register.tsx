@@ -1,5 +1,4 @@
-import {ThemedText} from "@/components/others/ThemedText";
-import {ThemedView} from "@/components/others/ThemedView";
+import {ThemedView} from "@/components/common/ThemedView";
 import {StyleSheet, Text, TextInput, View} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {useState} from "react";
@@ -72,7 +71,7 @@ export default function RegisterView() {
         <SafeAreaProvider>
             <ThemedView style={styles.container}>
                 <SafeAreaView style={styles.innerContainer}>
-                    <ThemedText type="title">Зарегистрироваться</ThemedText>
+                    <Text>Зарегистрироваться</Text>
 
                     <View>
                         <Text>Введите свой ник</Text>

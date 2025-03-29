@@ -1,7 +1,7 @@
 import { Tabs } from "expo-router";
 import React from "react";
 
-import { Colors } from "@/constants/Colors";
+import { ColorsConst } from "@/constants/colors.const";
 import { useColorScheme } from "@/hooks/useColorScheme";
 
 export default function AuthLayout() {
@@ -10,7 +10,7 @@ export default function AuthLayout() {
     return (
         <Tabs
             screenOptions={{
-                tabBarActiveTintColor: Colors[colorScheme ?? "light"].tint,
+                tabBarActiveTintColor: ColorsConst[colorScheme ?? "light"].tint,
                 headerShown: false,
             }}
         >

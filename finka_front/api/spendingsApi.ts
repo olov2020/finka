@@ -32,6 +32,15 @@ export const getSpendingsByIdApi = async (id: number) => {
     }
 }
 
+export const getAllSpendingsApi = async () => {
+    try {
+        const response = await $authHost.get(`/spendings/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 export const changeSpendingsByIdApi = async (id: number) => {
     try {
         const response = await $authHost.put(`/spendings/change/${id}/`);

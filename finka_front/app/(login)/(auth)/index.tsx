@@ -1,5 +1,4 @@
-import {ThemedText} from "@/components/others/ThemedText";
-import {ThemedView} from "@/components/others/ThemedView";
+import {ThemedView} from "@/components/common/ThemedView";
 import {StyleSheet, TextInput, View, Text} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {Button} from "@rneui/themed";
@@ -64,7 +63,7 @@ export default function LoginView() {
         <SafeAreaProvider>
             <ThemedView style={styles.container}>
                 <SafeAreaView style={styles.innerContainer}>
-                    <ThemedText type="title">Войти</ThemedText>
+                    <Text>Войти</Text>
 
                     <View>
                         <Text>Введите свою почту</Text>

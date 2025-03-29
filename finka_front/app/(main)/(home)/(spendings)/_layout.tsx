@@ -3,19 +3,13 @@ import React from "react";
 import {StyleSheet} from "react-native";
 
 export default function MainLayout() {
+
     return (
         <Stack>
             <Stack.Screen
-                name="(account)"
+                name="index"
                 options={{
-                    title: "Account",
-                    headerShown: false,
-                }}
-            />
-            <Stack.Screen
-                name="(home)"
-                options={{
-                    title: "Home",
+                    title: "Spendings",
                     headerShown: false,
                 }}
             />
