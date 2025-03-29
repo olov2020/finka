@@ -25,10 +25,15 @@ INSTALLED_APPS = [
 
     # REST
     "rest_framework",
+    'rest_framework_simplejwt',
 
     # Custom apps
     "users",
-    "transactions",
+    "spendings",
+    "earnings",
+    "balance",
+    "savings",
+    "reminders",
 
     # Other stuff
     'drf_yasg',
@@ -37,12 +42,12 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "users.User"
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_FILTER_BACKENDS': (
-        'django_filters.rest_framework.DjangoFilterBackend'
-    ),
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
 
 SIMPLE_JWT = {
