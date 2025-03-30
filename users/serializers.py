@@ -50,6 +50,14 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'email', 'name', 'surname']
+    
+    def validate_email(self, value):
+        user = getattr(self, 'instance', None)
+        if user and user.email == value:
+            return value
+        if User.objects.exclude(pk=user.pk if user else None).filter(email=value).exists():
+            raise serializers.ValidationError("Этот адрес уже занят")
+        return value
 
 # Сериализатор для изменения пароля пользователя
 class ChangePasswordSerializer(serializers.Serializer):

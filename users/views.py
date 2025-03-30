@@ -36,22 +36,15 @@ class UserRegistrationView(generics.CreateAPIView):
         }, status=status.HTTP_201_CREATED)
 
 
-# Представление получения токена пользователя для авторизации
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
 
 class UserProfileView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
-
+    serializer_class = UserProfileSerializer
     def get_object(self):
         return self.request.user
-
-    def retrieve(self, request, *args, **kwargs):
-        user = self.get_object()
-        refresh = RefreshToken.for_user(user)
-        access_token = str(refresh.access_token)
-        return Response({"access_token": access_token}, status=status.HTTP_200_OK)
 
 
 # Представление изменения пароля пользователя
@@ -82,7 +75,6 @@ class CustomRefreshTokenView(APIView):
             access_token = str(refresh.access_token)
             return Response({"access_token": access_token}, status=status.HTTP_200_OK)
         except Exception as e:
-
             return Response(
                 {"detail": "Refresh token is invalid or expired. Logging out user."},
                 status=status.HTTP_401_UNAUTHORIZED
