@@ -1,27 +1,41 @@
-import {TouchableOpacity, Text, StyleSheet} from 'react-native';
+import React, {ReactElement} from 'react';
+import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
 import BlankCard from "@/components/common/BlankCard";
-import {ReactElement} from "react";
 
 interface AddTransactionButtonProps {
-    title: string;
-    icon?: ReactElement;
-    onPress: () => void;
+  title: string;
+  icon?: ReactElement;
+  onPress: () => void;
+  justifyContent?: 'center' | 'flex-start' | 'flex-end' | 'space-between';
+  flex?: number;
 }
 
-export default function Button({title, icon, onPress}: AddTransactionButtonProps) {
-    return (
-        <BlankCard>
-            <TouchableOpacity onPress={onPress} style={styles.button}>
-                <Text>{title}</Text>
-                {icon}
-            </TouchableOpacity>
-        </BlankCard>
-    );
+export default function Button({
+                                 title,
+                                 icon,
+                                 onPress,
+                                 justifyContent = 'center',
+                                 flex,
+                               }: AddTransactionButtonProps) {
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.button, {flex}]}>
+      <BlankCard>
+        <View style={[styles.container, {justifyContent}]}>
+          <Text>{title}</Text>
+          {icon}
+        </View>
+      </BlankCard>
+    </TouchableOpacity>
+  );
 }
 
 const styles = StyleSheet.create({
-    button: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-    }
+  button: {
+    width: '100%',
+  },
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+    width: '100%',
+  },
 });

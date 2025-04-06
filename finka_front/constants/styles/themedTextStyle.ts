@@ -1,7 +1,7 @@
 import {StyleSheet} from "react-native";
 
-export const titleTextStyle = StyleSheet.create({
-    title: {
+export const themedTextStyle = StyleSheet.create({
+    text: {
         alignSelf: 'center',
     }
 });

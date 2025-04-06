@@ -1,15 +1,33 @@
-import {View, type ViewProps} from 'react-native';
-
-import {useThemeColor} from '@/hooks/useThemeColor';
-import {themedViewStyle} from "@/constants/styles";
+import React from 'react';
+import { ImageBackground, StyleSheet, View, type ViewProps } from 'react-native';
+import { useThemeColor } from '@/hooks/useThemeColor';
+import { themedViewStyle } from "@/constants/styles";
 
 export type ThemedViewProps = ViewProps & {
-    lightColor?: string;
-    darkColor?: string;
+  lightColor?: string;
+  darkColor?: string;
 };
 
-export function ThemedView({style, lightColor, darkColor, ...otherProps}: ThemedViewProps) {
-    const backgroundColor = useThemeColor({light: lightColor, dark: darkColor}, 'background');
+export function ThemedView({ style, lightColor, darkColor, ...otherProps }: ThemedViewProps) {
+  const backgroundColor = useThemeColor({ light: lightColor, dark: darkColor }, 'background');
 
-    return <View style={[{backgroundColor}, themedViewStyle.themedView, style]} {...otherProps} />;
+  return (
+    <ImageBackground
+      source={require('@/assets/images/background.svg')} // Ensure this path is correct
+      style={styles.backgroundImage}
+    >
+      <View style={[themedViewStyle.themedView, style]} {...otherProps} />
+    </ImageBackground>
+  );
 }
+
+const styles = StyleSheet.create({
+  backgroundImage: {
+    flex: 1,
+    resizeMode: 'cover', // or 'contain' or 'stretch'
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    height: '100%',
+  },
+});

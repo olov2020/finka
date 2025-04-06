@@ -5,6 +5,7 @@ import BlankCard from "@/components/common/BlankCard";
 import { TextInputMask } from 'react-native-masked-text';
 import {titleTextStyle} from '@/constants/styles';
 import {input} from "sucrase/dist/types/parser/traverser/base";
+import {themedTextStyle} from "@/constants/styles/themedTextStyle";
 
 interface TransactionsFromTimeToTimeProps {
     transactionApi: (time1: string, time2: string) => {};
@@ -26,17 +27,15 @@ export default function TransactionsFromTimeToTime({transactionApi, title}: Tran
         time2: format(currentDate, 'dd.MM.yyyy'),
     });
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (new Date(inputDates.time1) > currentDate) {
             setInputDates({...inputDates, time1: currentDate});
         }
-    }, [inputDates]);
+    }, [inputDates]);*/
 
-    // TODO
-    // write date handler to check the actual date
     return (
         <BlankCard>
-            <Text style={titleTextStyle.title}>{title}</Text>
+            <Text style={themedTextStyle.text}>{title}</Text>
             <View style={styles.container}>
                 <Text>С</Text>
                 <TextInputMask
