@@ -11,18 +11,16 @@ class UserSerializer(serializers.ModelSerializer):
     # Мета класс для указания модели и полей
     class Meta:
         model = User
-        fields = ['id', 'email', 'phone', 'first_name', 'last_name', 'date_of_birth', 'password']
+        fields = ['id', 'email', 'name', 'surname', 'password']
 
     # Метод для создания пользователя
     def create(self, validated_data):
         user = User.objects.create_user(
             email=validated_data['email'],
-            phone=validated_data['phone'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            date_of_birth=validated_data['date_of_birth'],
+            name=validated_data.get('name', ''),
+            surname=validated_data.get('surname', ''),
             password=validated_data['password']
-        )
+        )   
         return user
     
     # Метод для обновления данных пользователя
@@ -41,16 +39,17 @@ class CustomTokenObtainPairSerializer(TokenObtainPairSerializer):
     def get_token(cls, user):
         token = super().get_token(user)
         token['email'] = user.email
-        token['phone'] = user.phone
+        token['name'] = user.name
+        token['surname'] = user.surname
         return token
 
 # Сериализатор для профиля пользователя
 class UserProfileSerializer(serializers.ModelSerializer):
     email = serializers.EmailField(required=True)
-    
+
     class Meta:
         model = User
-        fields = ['id', 'email', 'phone', 'first_name', 'last_name', 'date_of_birth']
+        fields = ['id', 'email', 'name', 'surname']
 
 # Сериализатор для изменения пароля пользователя
 class ChangePasswordSerializer(serializers.Serializer):
