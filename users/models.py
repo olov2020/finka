@@ -14,31 +14,15 @@ class UserManager(BaseUserManager):
         user.save(using=self._db) # Сохраняем пользователя в базу данных
         return user
 
-    def create_superuser(self, email, password=None, **extra_fields): # Метод для создания суперпользователя
-        extra_fields.setdefault("is_staff", True) # Устанавливаем параметр is_staff в True, то есть даем доступ в админку
-        extra_fields.setdefault("is_superuser", True) # Даем права суперпользователя
-
-        # Проверяем параметры
-        if extra_fields.get("is_staff") is not True: 
-            raise ValueError("Superuser must have is_staff=True")
-        if extra_fields.get("is_superuser") is not True:
-            raise ValueError("Superuser must have is_superuser=True")
-
-        return self.create_user(email, password, **extra_fields) # Создаем и возвращаем экземпляр суперпользователя
-
-# Класс пользователя
 class User(AbstractBaseUser):
     email = models.EmailField(unique=True, verbose_name="Email")
-    phone = models.CharField(max_length=16, unique=True, verbose_name="Phone number", default="")
-    first_name = models.CharField(max_length=64, verbose_name="First name", default="")
-    last_name = models.CharField(max_length=64, verbose_name="Last name", default="")
-    date_of_birth = models.DateField(verbose_name="Date of birth", blank=True, null=True)
-    password = models.CharField(max_length=128, verbose_name="Password")
+    name = models.CharField(max_length=64, verbose_name="Name", default="")
+    surname = models.CharField(max_length=64, verbose_name="Surname", default="")
 
-    objects = UserManager() # Устанавливаем через что создается пользователь
+    objects = UserManager()  # Менеджер пользователей
 
-    USERNAME_FIELD = 'email' # Меняем логин на email
-    REQUIRED_FIELDS = ['phone', 'first_name', 'last_name', 'date_of_birth'] # Поля которые обязательны для заполнения, в данном случае не указываем потому что email - обязательное поле
+    USERNAME_FIELD = 'email'  # Используем email для аутентификации
+    REQUIRED_FIELDS = ['name', 'surname']  # Обязательные поля, кроме email
 
-    def __str__(self): # Метод для отображения пользователя в админке
+    def __str__(self):
         return self.email
