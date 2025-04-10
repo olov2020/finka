@@ -17,6 +17,7 @@ const styles = StyleSheet.create({
     view: {
         width: '100%',
         gap: 20,
+        boxSizing: 'border-box',
         backgroundColor: 'white',
         borderRadius: 10,
         padding: 12,
@@ -24,6 +25,5 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 4, height: 10 },
         shadowOpacity: 0.1,
         shadowRadius: 36,
-        elevation: 5, // For Android
     },
 });

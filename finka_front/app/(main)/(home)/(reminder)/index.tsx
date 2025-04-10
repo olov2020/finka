@@ -1,78 +1,55 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {Text} from 'react-native';
 import {ThemedView} from '@/components/common/ThemedView';
-import TransactionsFromTimeToTime from '@/components/transactions/TransactionsFromTimeToTime';
-import {getAllSpendingsApi, getSpendingsFromTime1ToTime2Api} from '@/api/spendingsApi';
 import Button from '@/components/common/Button';
-import ListOfTransactions from '@/components/transactions/ListOfTransactions';
 import {safeAreaViewStyle} from '@/constants/styles';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from './_layout';
 import {ThemedText} from "@/components/common/ThemedText";
+import {addReminderApi} from "@/api/reminderApi";
+import ListOfReminders from "@/app/(main)/(home)/(reminder)/ListOfReminders";
+import {ReminderItemProps} from "@/types/ReminderItemProps.type";
 
 type SpendingsViewProps = {
-  navigation: StackNavigationProp<RootStackParamList, 'Spendings'>;
+  navigation: StackNavigationProp<RootStackParamList, 'Reminder'>;
 };
 
-export default function SpendingsView({navigation}: SpendingsViewProps) {
+export default function ReminderView({navigation}: SpendingsViewProps) {
+  const [data, setData] = React.useState<ReminderItemProps[]>();
+
   return (
     <SafeAreaProvider>
       <ThemedView>
         <SafeAreaView style={safeAreaViewStyle.safeAreaView}>
-            <ThemedText>Spendings view</ThemedText>
+          <ThemedText>Ваши напоминания</ThemedText>
 
-            <TransactionsFromTimeToTime
-              title="Траты"
-              transactionApi={getSpendingsFromTime1ToTime2Api}
-            />
-
-            <Button
-              title="Добавить траты"
-              icon={<Text>+</Text>}
-              justifyContent="space-between"
-              onPress={() => {
-                navigation.navigate('add-spendings', {
-                  title: 'Добавить траты',
-                  data: [
-                    {
-                      name: 'Название',
-                      value: 'burger',
-                      editable: true,
-                    },
-                    {
-                      name: 'asd',
-                      value: 1231,
-                    },
-                    {
-                      name: 'Название',
-                      value: 'burger',
-                      editable: true,
-                    },
-                    {
-                      name: 'asd',
-                      value: 1231,
-                    }
-                  ],
-                  buttons: {
-                    left: {
-                      title: 'Добавить',
-                      onPress: () => navigation.goBack(),
-                    },
-                    right: {
-                      title: 'Отмена',
-                      onPress: () => navigation.goBack(),
-                    },
+          <Button
+            title="Добавить напоминание"
+            icon={<Text>+</Text>}
+            justifyContent="space-between"
+            onPress={() => {
+              navigation.navigate('add-reminder', {
+                title: 'Добавить напоминание',
+                buttons: {
+                  left: {
+                    title: 'Добавить',
+                    onPress: () => addReminderApi,
                   },
-                });
-              }}
-            />
+                  right: {
+                    title: 'Отмена',
+                    onPress: () => navigation.goBack(),
+                  },
+                },
+              });
+            }}
+          />
 
-            <ListOfTransactions
-              title="Список трат"
-              transactionApi={getAllSpendingsApi}
-              navigation={navigation}
-            />
+          <ListOfReminders
+            title="Список напоминаний"
+            data={data}
+            navigation={navigation}
+          />
         </SafeAreaView>
       </ThemedView>
     </SafeAreaProvider>

@@ -28,6 +28,15 @@ export const getEarningsByIdApi = async (id: number) => {
     }
 }
 
+export const getAllEarningsApi = async () => {
+    try {
+        const response = await $authHost.get(`/earnings/`);
+        return response.data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
 export const changeEarningsByIdApi = async (id: number) => {
     try {
         const response = await $authHost.put(`/earnings/change/${id}/`);

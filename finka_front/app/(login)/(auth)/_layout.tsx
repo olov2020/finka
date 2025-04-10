@@ -1,31 +1,21 @@
-import { Tabs } from "expo-router";
 import React from "react";
 
-import { ColorsConst } from "@/constants/colors.const";
-import { useColorScheme } from "@/hooks/useColorScheme";
+import LoginView from "@/app/(login)/(auth)/index";
+import RegisterView from "@/app/(login)/(auth)/register";
+import {createStackNavigator} from "@react-navigation/stack";
+
+export type RootStackParamList = {
+  'Login': undefined;
+  'Register': undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 export default function AuthLayout() {
-    const colorScheme = useColorScheme();
-
-    return (
-        <Tabs
-            screenOptions={{
-                tabBarActiveTintColor: ColorsConst[colorScheme ?? "light"].tint,
-                headerShown: false,
-            }}
-        >
-            <Tabs.Screen
-                name="index"
-                options={{
-                    title: "Login",
-                }}
-            />
-            <Tabs.Screen
-                name="register"
-                options={{
-                    title: "Register",
-                }}
-            />
-        </Tabs>
-    );
+  return (
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen name="Login" component={LoginView} options={{headerShown: false}}/>
+      <Stack.Screen name="Register" component={RegisterView} options={{headerShown: false}}/>
+    </Stack.Navigator>
+  );
 }

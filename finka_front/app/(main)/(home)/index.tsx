@@ -1,6 +1,6 @@
 import {ThemedView} from "@/components/common/ThemedView";
 import {Link} from "expo-router";
-import {StyleSheet, Text} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {ThemedText} from "@/components/common/ThemedText";
 
@@ -9,14 +9,38 @@ export default function HomeView() {
     <SafeAreaProvider>
       <ThemedView style={styles.container}>
         <SafeAreaView style={styles.innerContainer}>
-          <ThemedText>Home view</ThemedText>
+          <View>
+            <ThemedText>Добро пожаловать в Finka!</ThemedText>
+            <ThemedText>Приложение для учета личных финансов</ThemedText>
+          </View>
 
           <Link style={styles.link} href="./(spendings)">
             <ThemedText>
               Траты
             </ThemedText>
           </Link>
-          <Link style={styles.link} href="/(main)/(account)">
+          <Link style={styles.link} href="./(earnings)">
+            <ThemedText>
+              Заработок
+            </ThemedText>
+          </Link>
+          <Link style={styles.link} href="./(balance)">
+            <ThemedText>
+              Остаток
+            </ThemedText>
+          </Link>
+          <Link style={styles.link} href="./(savings)">
+            <ThemedText>
+              Копилка
+            </ThemedText>
+          </Link>
+          <Link style={styles.link} href="./(reminder)">
+            <ThemedText>
+              Напоминания
+            </ThemedText>
+          </Link>
+
+          <Link style={styles.link} href="../(account)">
             <ThemedText>
               Аккаунт
             </ThemedText>

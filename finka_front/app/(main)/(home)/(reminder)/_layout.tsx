@@ -1,21 +1,21 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import SpendingsView from './index';
-import AddSpendingsView from './add-spendings';
-import {AddTransactionProps} from '@/types/AddTransaction.type';
+import {AddTransactionProps} from '@/types/AddTransactionProps.type';
+import ReminderView from "./index";
+import AddReminderView from "./add-reminder";
 
 export type RootStackParamList = {
-  'Spendings': undefined;
-  'add-spendings': AddTransactionProps;
+  'Reminder': undefined;
+  'add-reminder': AddTransactionProps;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
-    <Stack.Navigator initialRouteName="Spendings">
-      <Stack.Screen name="Spendings" component={SpendingsView} options={{ headerShown: false }}/>
-      <Stack.Screen name="add-spendings" component={AddSpendingsView} options={{ headerShown: false }}/>
+    <Stack.Navigator initialRouteName="Reminder">
+      <Stack.Screen name="Reminder" component={ReminderView} options={{ headerShown: false }}/>
+      <Stack.Screen name="add-reminder" component={AddReminderView} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 };

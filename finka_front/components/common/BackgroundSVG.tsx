@@ -1,5 +1,5 @@
 import React from 'react';
-import {ImageBackground, View, Text, StyleSheet, type ViewProps} from "react-native";
+import {ImageBackground,  StyleSheet, type ViewProps} from "react-native";
 
 export default function Background({children}: ViewProps) {
   return (
@@ -18,12 +18,12 @@ const styles = StyleSheet.create({
   },
   backgroundImage: {
     flex: 1,
-    resizeMode: 'cover', // or 'contain' or 'stretch'
+    resizeMode: 'cover',
     justifyContent: 'center',
     alignItems: 'center',
   },
   content: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Optional: Add a semi-transparent background to the content
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
     padding: 20,
     borderRadius: 10,
   },

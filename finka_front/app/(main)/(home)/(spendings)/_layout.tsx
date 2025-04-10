@@ -2,7 +2,7 @@ import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import SpendingsView from './index';
 import AddSpendingsView from './add-spendings';
-import {AddTransactionProps} from '@/types/AddTransaction.type';
+import {AddTransactionProps} from '@/types/AddTransactionProps.type';
 
 export type RootStackParamList = {
   'Spendings': undefined;

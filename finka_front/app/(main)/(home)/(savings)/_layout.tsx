@@ -1,21 +1,21 @@
 import * as React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
-import SpendingsView from './index';
-import AddSpendingsView from './add-spendings';
-import {AddTransactionProps} from '@/types/AddTransaction.type';
+import {AddTransactionProps} from '@/types/AddTransactionProps.type';
+import SavingsView from "./index";
+import AddSavingsView from "./add-savings";
 
 export type RootStackParamList = {
-  'Spendings': undefined;
-  'add-spendings': AddTransactionProps;
+  'Savings': undefined;
+  'add-savings': AddTransactionProps;
 };
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const App = () => {
   return (
-    <Stack.Navigator initialRouteName="Spendings">
-      <Stack.Screen name="Spendings" component={SpendingsView} options={{ headerShown: false }}/>
-      <Stack.Screen name="add-spendings" component={AddSpendingsView} options={{ headerShown: false }}/>
+    <Stack.Navigator initialRouteName="Savings">
+      <Stack.Screen name="Savings" component={SavingsView} options={{ headerShown: false }}/>
+      <Stack.Screen name="add-savings" component={AddSavingsView} options={{ headerShown: false }}/>
     </Stack.Navigator>
   );
 };

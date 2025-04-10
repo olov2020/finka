@@ -13,7 +13,7 @@ export function ThemedView({ style, lightColor, darkColor, ...otherProps }: Them
 
   return (
     <ImageBackground
-      source={require('@/assets/images/background.svg')} // Ensure this path is correct
+      source={require('@/assets/images/background.svg')}
       style={styles.backgroundImage}
     >
       <View style={[themedViewStyle.themedView, style]} {...otherProps} />
@@ -24,7 +24,7 @@ export function ThemedView({ style, lightColor, darkColor, ...otherProps }: Them
 const styles = StyleSheet.create({
   backgroundImage: {
     flex: 1,
-    resizeMode: 'cover', // or 'contain' or 'stretch'
+    resizeMode: 'cover',
     justifyContent: 'center',
     alignItems: 'center',
     width: '100%',

@@ -1,98 +1,106 @@
-import { ThemedView } from "@/components/common/ThemedView";
-import {SafeAreaView, StyleSheet, View, Text, TextInput} from "react-native";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import {ThemedView} from "@/components/common/ThemedView";
+import {SafeAreaView, StyleSheet, View, Text, TextInput, Alert} from "react-native";
+import {SafeAreaProvider} from "react-native-safe-area-context";
 import {usePathname} from "expo-router";
-import {useEffect, useState} from "react";
-import {getAccountDataApi} from "@/api/userApi";
+import React, {useEffect, useState} from "react";
+import {ThemedText} from "@/components/common/ThemedText";
+import BlankCard from "@/components/common/BlankCard";
+import {safeAreaViewStyle} from "@/constants/styles";
+import LabelWithValue from "@/components/common/LabelWithValue";
+import {AccountProps} from "@/types/AccountProps.type";
 
-interface AccountData {
-    username: string;
-    email: string;
-    name?: string;
-    surname?: string;
-    age?: number;
-    sex?: boolean;
-}
+const LABELS = [
+  {
+    label: 'Имя',
+    editable: true,
+  },
+  {
+    label: 'Фамилия',
+    editable: true,
+  },
+  {
+    label: 'Почта',
+    editable: true,
+  },
+]
 
 export default function AccountView() {
 
-    const [userData, setUserData] = useState<AccountData | null>({
-        username: 'vova',
-        email: 'vova@gmail.com',
-        name: 'vova',
-        surname: 'vova',
-        age: 20,
-        sex: true,
-    });
-    const pathname = usePathname();
+  const [userData, setUserData] = useState<AccountProps>({
+    name: 'vova',
+    surname: 'vinogradov',
+    email: 'vova@gmail.com',
+  });
 
-    /*useEffect( () => {
-        const getAccountDataFunc = async() => {
-            const data: AccountData = await getAccountDataApi();
-            setUserData(data);
-        }
+  const handleInputChange = (key: keyof AccountProps, value: string) => {
+    setUserData((prevData) => ({
+      ...prevData,
+      [key]: value,
+    }));
+  };
 
-        getAccountDataFunc();
-    }, [pathname]);*/
+  const pathname = usePathname();
 
-    if (!userData) {
-        return null;
-    }
+  /*useEffect( () => {
+      const getAccountDataFunc = async() => {
+          const data: AccountData = await getAccountDataApi();
+          setUserData(data);
+      }
 
-    return (
-        <SafeAreaProvider>
-            <ThemedView style={styles.container}>
-                <SafeAreaView style={styles.innerContainer}>
-                    <Text>Личный аккаунт</Text>
+      getAccountDataFunc();
+  }, [pathname]);*/
 
-                    <View>
-                        <Text>Никнейм</Text>
-                        <TextInput
-                            value={userData.username}
-                        />
+  if (!userData) {
+    return null;
+  }
 
-                        <Text>Имя</Text>
-                        <TextInput
-                            value={userData.email}
-                        />
+  return (
+    <SafeAreaProvider>
+      <ThemedView>
+        <SafeAreaView style={safeAreaViewStyle.safeAreaView}>
+          <ThemedText>Личный аккаунт</ThemedText>
 
-                        <Text>Фамилия</Text>
-                        <TextInput
-                            value={userData.email}
-                        />
-
-                        <Text>Возраст</Text>
-                        <TextInput
-                            value={userData.age?.toString()}
-                        />
-
-                        <Text>Пол</Text>
-                        <TextInput
-                            value={userData.sex ? 'Мужской' : 'Женский'}
-                        />
-
-                        <Text>Email</Text>
-                        <TextInput
-                            value={userData.email}
-                        />
-                    </View>
-                </SafeAreaView>
-            </ThemedView>
-        </SafeAreaProvider>
-    );
+          <BlankCard>
+            <View style={styles.formContainer}>
+              {LABELS.map((label, index) => {
+                const key = Object.keys(userData)[index] as keyof AccountProps;
+                if (userData[key] !== undefined) {
+                  return (
+                    <LabelWithValue
+                      key={label.label}
+                      label={label.label}
+                      value={String(userData[key])}
+                      editable={label.editable}
+                      onChangeText={(value) => handleInputChange(key, value)}
+                    />
+                  );
+                }
+              })}
+            </View>
+          </BlankCard>
+        </SafeAreaView>
+      </ThemedView>
+    </SafeAreaProvider>
+  );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    innerContainer: {
-        flex: 1,
-        justifyContent: "space-around",
-        alignItems: "center",
-    },
-    link: {
-        lineHeight: 30,
-        fontSize: 16,
-    },
+  buttonsContainer: {
+    flex: 1,
+    gap: 12,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  formContainer: {
+    flex: 1,
+    gap: 8,
+  },
+  container: {
+    gap: 12,
+    width: '100%',
+  },
+  row: {
+    flex: 1,
+    justifyContent: 'space-between',
+  },
 });

@@ -5,7 +5,7 @@ import {ThemedView} from '@/components/common/ThemedView';
 import TransactionsFromTimeToTime from '@/components/transactions/TransactionsFromTimeToTime';
 import {getAllSpendingsApi, getSpendingsFromTime1ToTime2Api} from '@/api/spendingsApi';
 import Button from '@/components/common/Button';
-import ListOfTransactions from '@/components/transactions/ListOfTransactions';
+import ListOfSpendings from '@/app/(main)/(home)/(spendings)/ListOfSpendings';
 import {safeAreaViewStyle} from '@/constants/styles';
 import {StackNavigationProp} from '@react-navigation/stack';
 import {RootStackParamList} from './_layout';
@@ -68,7 +68,7 @@ export default function SpendingsView({navigation}: SpendingsViewProps) {
               }}
             />
 
-            <ListOfTransactions
+            <ListOfSpendings
               title="Список трат"
               transactionApi={getAllSpendingsApi}
               navigation={navigation}

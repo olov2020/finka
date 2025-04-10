@@ -1,46 +1,59 @@
 import React from 'react';
-import {View, StyleSheet, Text, SafeAreaView, TouchableOpacity} from 'react-native';
+import {View, StyleSheet, Text, TextInput, Alert} from 'react-native';
 import BlankCard from '@/components/common/BlankCard';
-import {safeAreaViewStyle, titleTextStyle} from "@/constants/styles";
-import {SafeAreaProvider} from "react-native-safe-area-context";
-import {ThemedView} from "@/components/common/ThemedView";
 import Button from "@/components/common/Button";
 import {themedTextStyle} from "@/constants/styles/themedTextStyle";
+import {SpendingsItemProps} from "@/types/SpendingsItemProps.type";
+import {ButtonProps} from "@/types/ButtonProps.type";
 
 type AddTransactionProps = {
-  data: {
-    name: string;
-    value?: string | number;
-    editable?: boolean;
-  }[];
+  data: SpendingsItemProps;
   buttons: {
     left: {
       title: string;
-      onPress: () => void;
+      onPress: ({...params}: SpendingsItemProps) => any;
     };
-    right: {
-      title: string;
-      onPress: () => void;
-    };
+    right: ButtonProps;
   };
   title: string;
 };
 
 export default function AddTransaction({data, buttons, title}: AddTransactionProps) {
+  const handlePress = async () => {
+    const response = await buttons.left.onPress(data);
+    if (response) {
+      Alert.alert(
+        'Успех',
+        'Новая трата успешно добавлена!',
+        [
+          {
+            text: 'Супер!',
+          },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
+
   return (
     <View style={styles.container}>
       <BlankCard>
         <Text style={themedTextStyle.text}>{title}</Text>
         <View style={styles.formContainer}>
-        {data?.map((rowData, index) => (
-          <Text key={index}>{rowData.name} - {rowData.value ?? ''}</Text>
-        ))}
+          {Object.entries(data)?.map(([key, value]) => (
+            <View style={styles.row}>
+              <Text key={key}>{key}</Text>
+              <TextInput>
+                {value || ''}
+              </TextInput>
+            </View>
+          ))}
         </View>
       </BlankCard>
       <View style={styles.buttonsContainer}>
         <Button
           title={buttons.left.title}
-          onPress={buttons.left.onPress}
+          onPress={handlePress}
           flex={1}
         />
         <Button
@@ -67,6 +80,10 @@ const styles = StyleSheet.create({
   container: {
     gap: 12,
     width: '100%',
+  },
+  row: {
+    flex: 1,
+    justifyContent: 'space-between',
   }
 });
 

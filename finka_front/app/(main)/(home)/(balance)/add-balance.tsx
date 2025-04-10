@@ -10,9 +10,10 @@ import {themedTextStyle} from "@/constants/styles/themedTextStyle";
 import Button from "@/components/common/Button";
 import LabelWithValue from "@/components/common/LabelWithValue";
 import {SpendingsItemProps} from "@/types/SpendingsItemProps.type";
+import {BalanceItemProps} from "@/types/BalanceItemProps.type";
 
 type AddSpendingsViewProps = {
-  route: RouteProp<RootStackParamList, 'add-spendings'>;
+  route: RouteProp<RootStackParamList, 'add-balance'>;
 };
 
 const LABELS = [
@@ -21,15 +22,15 @@ const LABELS = [
     editable: true,
   },
   {
-    label: 'Категория',
+    label: 'Сумма',
     editable: true,
   },
   {
-    label: 'Цена',
+    label: 'Дата начала',
     editable: true,
   },
   {
-    label: 'Дата',
+    label: 'Дата окончания',
     editable: true,
   },
   {
@@ -37,14 +38,14 @@ const LABELS = [
   },
 ]
 
-export default function AddSpendingsView({route}: AddSpendingsViewProps) {
+export default function AddBalanceView({route}: AddSpendingsViewProps) {
   const {title, buttons, data} = route.params;
 
-  const [spendingData, setSpendingData] = React.useState<SpendingsItemProps>({
+  const [spendingData, setSpendingData] = React.useState<BalanceItemProps>({
     name: data?.name || '',
-    category: data?.category || '',
-    price: data?.price || '',
-    date: data?.date || '',
+    balance: data?.balance || '',
+    start_date: data?.start_date || '',
+    end_date: data?.end_date || '',
     time: data?.time || undefined,
   });
 
@@ -52,9 +53,9 @@ export default function AddSpendingsView({route}: AddSpendingsViewProps) {
     const response = await buttons.left.onPress({
       id: data?.id,
       name: spendingData.name,
-      category: spendingData.category,
-      price: spendingData.price,
-      date: spendingData.date,
+      balance: spendingData.balance,
+      start_date: spendingData.start_date,
+      end_date: spendingData.end_date,
     });
     if (response) {
       Alert.alert(
@@ -81,7 +82,7 @@ export default function AddSpendingsView({route}: AddSpendingsViewProps) {
     }
   };
 
-  const handleInputChange = (key: keyof SpendingsItemProps, value: string) => {
+  const handleInputChange = (key: keyof BalanceItemProps, value: string) => {
     setSpendingData((prevData) => ({
       ...prevData,
       [key]: value,
@@ -97,7 +98,7 @@ export default function AddSpendingsView({route}: AddSpendingsViewProps) {
               <Text style={themedTextStyle.text}>{title}</Text>
               <View style={styles.formContainer}>
                 {LABELS.map((label, index) => {
-                  const key = Object.keys(spendingData)[index] as keyof SpendingsItemProps;
+                  const key = Object.keys(spendingData)[index] as keyof BalanceItemProps;
                   if (spendingData[key] !== undefined) {
                     return (
                       <LabelWithValue
