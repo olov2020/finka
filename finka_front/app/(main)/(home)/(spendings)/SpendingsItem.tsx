@@ -1,22 +1,22 @@
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
-import {SpendingsItemProps} from "@/types/SpendingsItemProps.type";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "./_layout";
-import {changeSpendingsByIdApi} from "@/api/spendingsApi";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { SpendingsItemProps } from "@/types/SpendingsItemProps.type";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "./_layout";
+import { changeSpendingsByIdApi, deleteSpendingsByIdApi, getSpendingsFromDatesApi } from "@/api/spendingsApi";
 
 type TransactionItemWithNavigationProps = SpendingsItemProps & {
   navigation: StackNavigationProp<RootStackParamList, 'Spendings'>;
 }
 
 export default function SpendingsItem({
-                                        id,
-                                        name,
-                                        category,
-                                        price,
-                                        date,
-                                        time,
-                                        navigation
-                                      }: TransactionItemWithNavigationProps) {
+  id,
+  name,
+  category,
+  price,
+  date,
+  time,
+  navigation
+}: TransactionItemWithNavigationProps) {
   return (
     <TouchableOpacity onPress={() => {
       navigation.navigate('add-spendings', {
@@ -32,11 +32,11 @@ export default function SpendingsItem({
         buttons: {
           left: {
             title: 'Сохранить',
-            onPress: changeSpendingsByIdApi,
+            fetchData: changeSpendingsByIdApi,
           },
           right: {
             title: 'Удалить',
-            onPress: () => navigation.goBack(),
+            fetchData: deleteSpendingsByIdApi,
           },
         },
       });

@@ -6,12 +6,13 @@ import { themedTextStyle } from "@/constants/styles/themedTextStyle";
 export type ThemedTextProps = TextProps & {
   lightColor?: string;
   darkColor?: string;
+  fontSize?: number;
 };
 
-export function ThemedText({ style, lightColor, darkColor, ...otherProps }: ThemedTextProps) {
+export function ThemedText({ style, lightColor, darkColor, fontSize, ...otherProps }: ThemedTextProps) {
   const textColor = useThemeColor({ light: lightColor, dark: darkColor }, 'text');
 
   return (
-    <Text style={[themedTextStyle.text, { color: textColor }, style]} {...otherProps} />
+    <Text style={[themedTextStyle.text, { color: textColor, fontSize: fontSize }, style]} {...otherProps} />
   );
 }

@@ -1,3 +1,4 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 
 export const $host = axios.create({
@@ -11,13 +12,13 @@ export const $authHost = axios.create({
 // Function to refresh the access token
 const refreshAccessToken = async () => {
     try {
-        const refreshToken = localStorage.getItem('refresh_token');
+        const refreshToken = AsyncStorage.getItem('refresh_token');
 
         const response = await $host.post('/refresh/', { refreshToken });
         const { accessToken, newRefreshToken } = response.data;
 
-        localStorage.setItem('access_token', accessToken);
-        localStorage.setItem('refresh_token', newRefreshToken);
+        AsyncStorage.setItem('access_token', accessToken);
+        AsyncStorage.setItem('refresh_token', newRefreshToken);
 
         return accessToken;
     } catch (error) {
@@ -28,7 +29,7 @@ const refreshAccessToken = async () => {
 
 $authHost.interceptors.request.use(
     async (config) => {
-        const accessToken = localStorage.getItem('access_token');
+        const accessToken = AsyncStorage.getItem('access_token');
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }

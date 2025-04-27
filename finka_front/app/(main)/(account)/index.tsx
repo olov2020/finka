@@ -1,13 +1,16 @@
-import {ThemedView} from "@/components/common/ThemedView";
-import {SafeAreaView, StyleSheet, View, Text, TextInput, Alert} from "react-native";
-import {SafeAreaProvider} from "react-native-safe-area-context";
-import {usePathname} from "expo-router";
-import React, {useEffect, useState} from "react";
-import {ThemedText} from "@/components/common/ThemedText";
+import { ThemedView } from "@/components/common/ThemedView";
+import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { usePathname } from "expo-router";
+import React, { useEffect, useState } from "react";
+import { ThemedText } from "@/components/common/ThemedText";
 import BlankCard from "@/components/common/BlankCard";
-import {safeAreaViewStyle} from "@/constants/styles";
+import { safeAreaViewStyle } from "@/constants/styles";
 import LabelWithValue from "@/components/common/LabelWithValue";
-import {AccountProps} from "@/types/AccountProps.type";
+import { AccountProps } from "@/types/AccountProps.type";
+import { changeAccountDataApi, getAccountDataApi } from "@/api/userApi";
+import Button from "@/components/common/Button";
+import { emailHandler } from "@/functioins/formHandler/emailHandler";
 
 const LABELS = [
   {
@@ -25,11 +28,10 @@ const LABELS = [
 ]
 
 export default function AccountView() {
-
   const [userData, setUserData] = useState<AccountProps>({
-    name: 'vova',
-    surname: 'vinogradov',
-    email: 'vova@gmail.com',
+    name: '',
+    surname: '',
+    email: '',
   });
 
   const handleInputChange = (key: keyof AccountProps, value: string) => {
@@ -41,25 +43,50 @@ export default function AccountView() {
 
   const pathname = usePathname();
 
-  /*useEffect( () => {
-      const getAccountDataFunc = async() => {
-          const data: AccountData = await getAccountDataApi();
-          setUserData(data);
-      }
+  // TODO: rewrite to getting data from access_token
+  useEffect(() => {
+    const getAccountDataFunc = async () => {
+      const data: AccountProps = await getAccountDataApi();
+      setUserData(data);
+    }
 
-      getAccountDataFunc();
-  }, [pathname]);*/
+    getAccountDataFunc();
+  }, [pathname]);
 
-  if (!userData) {
-    return null;
+  const checkDataErrors = (type: string, value: string) => {
+    switch (type) {
+      case 'email':
+        return emailHandler(value);
+      case 'name':
+        return value.trim() === '' ? 'Введите имя' : 'success';
+      case 'surname':
+        return value.trim() === '' ? 'Введите фамилию' : 'success';
+      default:
+        throw new Error(`There is no validation for this type of field ${type}`);
+    }
   }
+
+  const handleChangeData = async () => {
+    for (const [key, value] of Object.entries(userData)) {
+      try {
+        const error = checkDataErrors(key, value);
+        if (error !== 'success') {
+          alert(error);
+          return;
+        }
+      } catch (error) {
+        alert(error);
+      }
+    }
+    const id = 0;
+    const data = await changeAccountDataApi(userData.email, userData.name, userData.surname, id);
+  };
 
   return (
     <SafeAreaProvider>
       <ThemedView>
         <SafeAreaView style={safeAreaViewStyle.safeAreaView}>
-          <ThemedText>Личный аккаунт</ThemedText>
-
+          <ThemedText fontSize={24}>Личный аккаунт</ThemedText>
           <BlankCard>
             <View style={styles.formContainer}>
               {LABELS.map((label, index) => {
@@ -78,6 +105,7 @@ export default function AccountView() {
               })}
             </View>
           </BlankCard>
+          <Button title="Изменить информацию" onPress={handleChangeData} />
         </SafeAreaView>
       </ThemedView>
     </SafeAreaProvider>

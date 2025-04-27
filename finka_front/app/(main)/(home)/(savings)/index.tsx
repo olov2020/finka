@@ -23,7 +23,7 @@ export default function SavingsView({navigation}: SpendingsViewProps) {
     <SafeAreaProvider>
       <ThemedView>
         <SafeAreaView style={safeAreaViewStyle.safeAreaView}>
-          <ThemedText>Ваши накопления</ThemedText>
+          <ThemedText fontSize={24}>Ваши накопления</ThemedText>
 
           <Button
             title="Добавить цель накопления"
