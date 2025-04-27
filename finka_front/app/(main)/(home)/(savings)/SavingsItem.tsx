@@ -1,21 +1,21 @@
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "./_layout";
-import {SavingsItemProps} from "@/types/SavingsItemProps.type";
-import {changeSavingsByIdApi} from "@/api/savingsApi";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "./_layout";
+import { SavingsItemProps } from "@/types/SavingsItemProps.type";
+import { changeSavingsByIdApi, deleteSavingsByIdApi } from "@/api/savingsApi";
 
 type TransactionItemWithNavigationProps = SavingsItemProps & {
   navigation: StackNavigationProp<RootStackParamList, 'Savings'>;
 }
 
 export default function SavingsItem({
-                                      id,
-                                      name,
-                                      saving,
-                                      date,
-                                      time,
-                                      navigation
-                                    }: TransactionItemWithNavigationProps) {
+  id,
+  name,
+  saving,
+  date,
+  time,
+  navigation
+}: TransactionItemWithNavigationProps) {
   return (
     <TouchableOpacity onPress={() => {
       navigation.navigate('add-savings', {
@@ -30,11 +30,11 @@ export default function SavingsItem({
         buttons: {
           left: {
             title: 'Сохранить',
-            onPress: changeSavingsByIdApi,
+            fetchData: changeSavingsByIdApi,
           },
           right: {
             title: 'Удалить',
-            onPress: () => navigation.goBack(),
+            fetchData: deleteSavingsByIdApi,
           },
         },
       });

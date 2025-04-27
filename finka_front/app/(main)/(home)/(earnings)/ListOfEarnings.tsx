@@ -13,20 +13,9 @@ type ListOfTransactionsProps = {
 }
 
 export default function ListOfEarnings({title, navigation, data}: ListOfTransactionsProps) {
-  data = [
-    {
-      id: 0,
-      name: 'Зарплата',
-      earning: '123',
-      date: '7.04.2025',
-      time: '12:12 7.04.2025',
-    },
-  ];
-
   return (
     <BlankCard flex={1}>
       <Text style={themedTextStyle.text}>{title}</Text>
-
       <View style={styles.container}>
         {data?.map((transaction) => (
           <EarningsItem

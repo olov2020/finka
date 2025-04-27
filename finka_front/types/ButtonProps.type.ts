@@ -1,4 +1,5 @@
 export type ButtonProps = {
   title: string,
-  onPress: () => void,
+  onPress?: () => void,
+  fetchData?: (value: any) => Promise<any>,
 };

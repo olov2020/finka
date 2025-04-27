@@ -1,24 +1,22 @@
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "./_layout";
-import {SavingsItemProps} from "@/types/SavingsItemProps.type";
-import {changeSavingsByIdApi} from "@/api/savingsApi";
-import {ReminderItemProps} from "@/types/ReminderItemProps.type";
-import {changeReminderByIdApi} from "@/api/reminderApi";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "./_layout";
+import { ReminderItemProps } from "@/types/ReminderItemProps.type";
+import { changeReminderByIdApi, deleteReminderByIdApi } from "@/api/reminderApi";
 
 type TransactionItemWithNavigationProps = ReminderItemProps & {
   navigation: StackNavigationProp<RootStackParamList, 'Reminder'>;
 }
 
 export default function ReminderItem({
-                                       id,
-                                       name,
-                                       price,
-                                       date,
-                                       link,
-                                       time,
-                                       navigation
-                                     }: TransactionItemWithNavigationProps) {
+  id,
+  name,
+  price,
+  date,
+  link,
+  time,
+  navigation
+}: TransactionItemWithNavigationProps) {
   return (
     <TouchableOpacity onPress={() => {
       navigation.navigate('add-reminder', {
@@ -34,11 +32,11 @@ export default function ReminderItem({
         buttons: {
           left: {
             title: 'Сохранить',
-            onPress: changeReminderByIdApi,
+            fetchData: changeReminderByIdApi,
           },
           right: {
             title: 'Удалить',
-            onPress: () => navigation.goBack(),
+            fetchData: deleteReminderByIdApi,
           },
         },
       });

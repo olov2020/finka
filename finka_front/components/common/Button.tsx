@@ -1,5 +1,5 @@
-import React, {ReactElement} from 'react';
-import {TouchableOpacity, Text, StyleSheet, View} from 'react-native';
+import React, { ReactElement } from 'react';
+import { TouchableOpacity, Text, StyleSheet, View } from 'react-native';
 import BlankCard from "@/components/common/BlankCard";
 
 interface AddTransactionButtonProps {
@@ -11,16 +11,16 @@ interface AddTransactionButtonProps {
 }
 
 export default function Button({
-                                 title,
-                                 icon,
-                                 onPress,
-                                 justifyContent = 'center',
-                                 flex,
-                               }: AddTransactionButtonProps) {
+  title,
+  icon,
+  onPress,
+  justifyContent = 'center',
+  flex,
+}: AddTransactionButtonProps) {
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.button, {flex}]}>
+    <TouchableOpacity onPress={onPress} style={[styles.button, { flex }]}>
       <BlankCard>
-        <View style={[styles.container, {justifyContent}]}>
+        <View style={[styles.container, { justifyContent }]}>
           <Text>{title}</Text>
           {icon}
         </View>

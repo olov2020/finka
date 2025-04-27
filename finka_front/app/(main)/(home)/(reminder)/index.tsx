@@ -1,29 +1,39 @@
-import React, {useEffect, useState} from 'react';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import {Text} from 'react-native';
-import {ThemedView} from '@/components/common/ThemedView';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Text } from 'react-native';
+import { ThemedView } from '@/components/common/ThemedView';
 import Button from '@/components/common/Button';
-import {safeAreaViewStyle} from '@/constants/styles';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from './_layout';
-import {ThemedText} from "@/components/common/ThemedText";
-import {addReminderApi} from "@/api/reminderApi";
+import { safeAreaViewStyle } from '@/constants/styles';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from './_layout';
+import { ThemedText } from "@/components/common/ThemedText";
+import { addReminderApi, getAllReminderApi } from "@/api/reminderApi";
 import ListOfReminders from "@/app/(main)/(home)/(reminder)/ListOfReminders";
-import {ReminderItemProps} from "@/types/ReminderItemProps.type";
+import { ReminderItemProps } from "@/types/ReminderItemProps.type";
+import { useRoute } from '@react-navigation/native';
 
-type SpendingsViewProps = {
+type ReminderViewProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Reminder'>;
 };
 
-export default function ReminderView({navigation}: SpendingsViewProps) {
-  const [data, setData] = React.useState<ReminderItemProps[]>();
+export default function ReminderView({ navigation }: ReminderViewProps) {
+  const [data, setData] = useState<ReminderItemProps[]>();
+  const route = useRoute();
+
+  useEffect(() => {
+    const getData = async () => {
+      const dataToDisplay = await getAllReminderApi();
+      setData(dataToDisplay);
+    }
+
+    getData();
+  }, [route]);
 
   return (
     <SafeAreaProvider>
       <ThemedView>
         <SafeAreaView style={safeAreaViewStyle.safeAreaView}>
-          <ThemedText>Ваши напоминания</ThemedText>
-
+          <ThemedText fontSize={24}>Ваши напоминания</ThemedText>
           <Button
             title="Добавить напоминание"
             icon={<Text>+</Text>}
@@ -34,7 +44,7 @@ export default function ReminderView({navigation}: SpendingsViewProps) {
                 buttons: {
                   left: {
                     title: 'Добавить',
-                    onPress: () => addReminderApi,
+                    fetchData: addReminderApi,
                   },
                   right: {
                     title: 'Отмена',
@@ -44,7 +54,6 @@ export default function ReminderView({navigation}: SpendingsViewProps) {
               });
             }}
           />
-
           <ListOfReminders
             title="Список напоминаний"
             data={data}

@@ -1,19 +1,18 @@
-import React, {useEffect, useState} from 'react';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import {Text} from 'react-native';
-import {ThemedView} from '@/components/common/ThemedView';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { Text } from 'react-native';
+import { ThemedView } from '@/components/common/ThemedView';
 import Button from '@/components/common/Button';
-import ListOfSpendings from '@/app/(main)/(home)/(spendings)/ListOfSpendings';
-import {safeAreaViewStyle} from '@/constants/styles';
-import {StackNavigationProp} from '@react-navigation/stack';
-import {RootStackParamList} from './_layout';
-import {ThemedText} from "@/components/common/ThemedText";
-import {format} from "date-fns";
-import {BalanceItemProps} from "@/types/BalanceItemProps.type";
-import {addBalanceApi} from "@/api/balanceApi";
+import { safeAreaViewStyle } from '@/constants/styles';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from './_layout';
+import { ThemedText } from "@/components/common/ThemedText";
+import { BalanceItemProps } from "@/types/BalanceItemProps.type";
+import { addBalanceApi, getAllBalanceApi } from "@/api/balanceApi";
 import ListOfBalance from "@/app/(main)/(home)/(balance)/ListOfBalance";
+import { useRoute } from '@react-navigation/native';
 
-type SpendingsViewProps = {
+type BalanceViewProps = {
   navigation: StackNavigationProp<RootStackParamList, 'Balance'>;
 };
 
@@ -22,41 +21,24 @@ export type Dates = {
   date2: string;
 }
 
-export default function SpendingsView({navigation}: SpendingsViewProps) {
-  const [data, setData] = React.useState<BalanceItemProps[]>();
-  const currentDate = new Date();
-  const firstDateOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
-  const [dates, setDates] = React.useState<Dates>({
-    date1: format(firstDateOfMonth, 'dd.MM.yyyy'),
-    date2: format(currentDate, 'dd.MM.yyyy'),
-  });
-  const pattern = /^\d{2}\.\d{2}\.\d{4}$/;
-  const [sum, setSum] = useState('123');
+export default function BalanceView({ navigation }: BalanceViewProps) {
+  const [data, setData] = useState<BalanceItemProps[]>();
+  const route = useRoute();
 
-  /*useEffect( () => {
+  useEffect(() => {
     const getData = async () => {
-      let dataToDisplay = undefined;
-      if (pattern.test(dates.date1) && pattern.test(dates.date2)) {
-        dataToDisplay = await getSpendingsFromDatesApi({
-          date1: dates.date1,
-          date2: dates.date2,
-        });
-      } else {
-        dataToDisplay = await getAllSpendingsApi();
-      }
-      setData(dataToDisplay.data);
-      setSum(dataToDisplay.sum);
+      const dataToDisplay = await getAllBalanceApi();
+      setData(dataToDisplay);
     }
 
     getData();
-  }, [dates]);*/
+  }, [route]);
 
   return (
     <SafeAreaProvider>
       <ThemedView>
         <SafeAreaView style={safeAreaViewStyle.safeAreaView}>
-          <ThemedText>Ваши остатки</ThemedText>
-
+          <ThemedText fontSize={24}>Ваши остатки</ThemedText>
           <Button
             title="Добавить остаток"
             icon={<Text>+</Text>}
@@ -67,7 +49,7 @@ export default function SpendingsView({navigation}: SpendingsViewProps) {
                 buttons: {
                   left: {
                     title: 'Добавить',
-                    onPress: () => addBalanceApi,
+                    fetchData: addBalanceApi,
                   },
                   right: {
                     title: 'Отмена',
@@ -77,7 +59,6 @@ export default function SpendingsView({navigation}: SpendingsViewProps) {
               });
             }}
           />
-
           <ListOfBalance
             title="Список остатков"
             data={data}

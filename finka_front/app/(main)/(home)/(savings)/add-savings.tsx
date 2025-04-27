@@ -1,17 +1,17 @@
-import React, {useEffect} from 'react';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import {ThemedView} from '@/components/common/ThemedView';
-import {safeAreaViewStyle} from '@/constants/styles';
-import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from './_layout';
-import {Alert, StyleSheet, Text, TextInput, View} from "react-native";
+import React from 'react';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { ThemedView } from '@/components/common/ThemedView';
+import { safeAreaViewStyle } from '@/constants/styles';
+import { RouteProp, useNavigation } from '@react-navigation/native';
+import { RootStackParamList } from './_layout';
+import { StyleSheet, Text, View } from "react-native";
 import BlankCard from "@/components/common/BlankCard";
-import {themedTextStyle} from "@/constants/styles/themedTextStyle";
+import { themedTextStyle } from "@/constants/styles/themedTextStyle";
 import Button from "@/components/common/Button";
 import LabelWithValue from "@/components/common/LabelWithValue";
-import {SavingsItemProps} from "@/types/SavingsItemProps.type";
+import { SavingsItemProps } from "@/types/SavingsItemProps.type";
 
-type AddSpendingsViewProps = {
+type AddSavingsViewProps = {
   route: RouteProp<RootStackParamList, 'add-savings'>;
 };
 
@@ -33,50 +33,72 @@ const LABELS = [
   },
 ]
 
-export default function AddSavingsView({route}: AddSpendingsViewProps) {
-  const {title, buttons, data} = route.params;
+export default function AddSavingsView({ route }: AddSavingsViewProps) {
+  const { title, buttons, data } = route.params;
+  const navigation = useNavigation();
 
-  const [spendingData, setSpendingData] = React.useState<SavingsItemProps>({
+  const [savingData, setSavingData] = React.useState<SavingsItemProps>({
     name: data?.name || '',
     saving: data?.saving || '',
     date: data?.date || '',
     time: data?.time || undefined,
   });
 
-  const handlePress = async () => {
-    const response = await buttons.left.onPress({
-      id: data?.id,
-      name: spendingData.name,
-      saving: spendingData.saving,
-      date: spendingData.date,
-    });
-    if (response) {
-      Alert.alert(
-        'Успех',
-        'Новая трата успешно добавлена!',
-        [
-          {
-            text: 'Супер!',
-          },
-        ],
-        {cancelable: false}
-      );
-    } else {
-      Alert.alert(
-        'Упс...',
-        'Что-то пошло не так, попробуйте позже.',
-        [
-          {
-            text: 'Хорошо',
-          },
-        ],
-        {cancelable: false}
-      );
+  const handleLeftPress = async () => {
+    if (buttons.left.fetchData) {
+      const id = data?.id || '';
+      if (id) {
+        const response = await buttons.left.fetchData({
+          id: id,
+          name: savingData.name,
+          saving: savingData.saving,
+          date: savingData.date,
+        });
+        if (response) {
+          alert('Накопления успешно изменены!');
+          navigation.navigate('Savings');
+        } else {
+          alert('Что-то пошло не так, попробуйте позже.');
+        }
+      }
+      else {
+        const response = await buttons.left.fetchData({
+          name: savingData.name,
+          saving: savingData.saving,
+          date: savingData.date,
+        });
+        if (response) {
+          alert('Новые накопления успешно добавлены!');
+          navigation.navigate('Savings');
+        } else {
+          alert('Что-то пошло не так, попробуйте позже.')
+        }
+      }
+    }
+    if (buttons.left.onPress) {
+      buttons.left.onPress();
+    }
+  };
+
+  const handleRightPress = async () => {
+    if (buttons.right.fetchData) {
+      const response = await buttons.right.fetchData({
+        id: data.id,
+      });
+      if (response) {
+        alert('Накопления успешно удалены!');
+        navigation.navigate('Savings');
+      } else {
+        alert('Что-то пошло не так, попробуйте позже.');
+      }
+    }
+    if (buttons.right.onPress) {
+      buttons.right.onPress();
     }
   };
 
   const handleInputChange = (key: keyof SavingsItemProps, value: string) => {
-    setSpendingData((prevData) => ({
+    setSavingData((prevData) => ({
       ...prevData,
       [key]: value,
     }));
@@ -91,13 +113,13 @@ export default function AddSavingsView({route}: AddSpendingsViewProps) {
               <Text style={themedTextStyle.text}>{title}</Text>
               <View style={styles.formContainer}>
                 {LABELS.map((label, index) => {
-                  const key = Object.keys(spendingData)[index] as keyof SavingsItemProps;
-                  if (spendingData[key] !== undefined) {
+                  const key = Object.keys(savingData)[index] as keyof SavingsItemProps;
+                  if (savingData[key] !== undefined) {
                     return (
                       <LabelWithValue
                         key={label.label}
                         label={label.label}
-                        value={String(spendingData[key])}
+                        value={String(savingData[key])}
                         editable={label.editable}
                         onChangeText={(value) => handleInputChange(key, value)}
                       />
@@ -109,13 +131,13 @@ export default function AddSavingsView({route}: AddSpendingsViewProps) {
             <View style={styles.buttonsContainer}>
               <Button
                 title={buttons.left.title}
-                onPress={handlePress}
+                onPress={handleLeftPress}
                 flex={1}
               />
               <Button
                 flex={1}
                 title={buttons.right.title}
-                onPress={buttons.right.onPress}
+                onPress={handleRightPress}
               />
             </View>
           </View>

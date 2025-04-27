@@ -13,34 +13,9 @@ type ListOfTransactionsProps = {
 }
 
 export default function ListOfSavings({title, navigation, data}: ListOfTransactionsProps) {
-  data = [
-    {
-      id: 0,
-      name: 'Накопление1',
-      saving: '123',
-      date: '6.04.2025',
-      time: '12:23 6.04.2025',
-    },
-    {
-      id: 0,
-      name: 'Накопление2',
-      saving: '123',
-      date: '6.04.2025',
-      time: '12:23 6.04.2025',
-    },
-    {
-      id: 0,
-      name: 'Накопление3',
-      saving: '123',
-      date: '6.04.2025',
-      time: '12:23 6.04.2025',
-    },
-  ];
-
   return (
     <BlankCard flex={1}>
       <Text style={themedTextStyle.text}>{title}</Text>
-
       <View style={styles.container}>
         {data?.map((transaction) => (
           <SavingsItem

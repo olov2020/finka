@@ -10,8 +10,8 @@ export default function HomeView() {
       <ThemedView style={styles.container}>
         <SafeAreaView style={styles.innerContainer}>
           <View>
-            <ThemedText>Добро пожаловать в Finka!</ThemedText>
-            <ThemedText>Приложение для учета личных финансов</ThemedText>
+            <ThemedText fontSize={24}>Добро пожаловать в Finka!</ThemedText>
+            <ThemedText fontSize={16}>Приложение для учета личных финансов</ThemedText>
           </View>
 
           <Link style={styles.link} href="./(spendings)">
