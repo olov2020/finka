@@ -2,6 +2,7 @@ from pathlib import Path
 import environ
 import os
 from datetime import timedelta
+from corsheaders.defaults import default_headers
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -34,9 +35,31 @@ INSTALLED_APPS = [
     "balance",
     "savings",
     "reminders",
+    "analytics",
+    "support",
 
     # Other stuff
     'drf_yasg',
+    'corsheaders',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://localhost:8081",
+]
+
+APPEND_SLASH = True
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_ALL_ORIGINS = True
+
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'content-type',
+    'Authorization',
+    'contenttype',
+#    'x-custom-header',
+#    "Access-Control-Allow-Origin",
 ]
 
 AUTH_USER_MODEL = "users.User"
@@ -67,9 +90,10 @@ SWAGGER_SETTINGS = {
 }
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",

@@ -3,6 +3,8 @@ from rest_framework.permissions import IsAuthenticated
 from .models import Balance
 from .serializers import BalanceSerializer
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.response import Response
+from rest_framework import status
 
 class BalanceCreateView(generics.ListCreateAPIView):
     serializer_class = BalanceSerializer
@@ -14,6 +16,14 @@ class BalanceCreateView(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": "Остаток успешно удален"}, 
+            status=status.HTTP_200_OK
+        )
+
 class BalanceDetailView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BalanceSerializer
     permission_classes = [IsAuthenticated]
@@ -22,3 +32,11 @@ class BalanceDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return Balance.objects.filter(user=self.request.user)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": "Остаток успешно удален"}, 
+            status=status.HTTP_200_OK
+        )

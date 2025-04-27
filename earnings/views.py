@@ -4,6 +4,7 @@ from rest_framework.exceptions import ValidationError
 from django.utils.dateparse import parse_date
 from .models import Earning
 from .serializers import EarningSerializer
+from rest_framework import status
 
 class EarningCreateView(generics.ListCreateAPIView):
     serializer_class = EarningSerializer
@@ -39,6 +40,14 @@ class EarningCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": "Доход успешно удален"}, 
+            status=status.HTTP_200_OK
+        )
 
 class EarningDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Earning.objects.all()
@@ -47,3 +56,11 @@ class EarningDetailView(generics.RetrieveUpdateDestroyAPIView):
 
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": "Доход успешно удален"}, 
+            status=status.HTTP_200_OK
+        )

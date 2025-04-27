@@ -5,6 +5,7 @@ from .serializers import SpendingSerializer
 from django.utils.dateparse import parse_date
 from rest_framework.response import Response
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status
 
 class SpendingCreateView(generics.ListCreateAPIView):
     serializer_class = SpendingSerializer
@@ -41,13 +42,29 @@ class SpendingCreateView(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": "Трата успешно удалена"}, 
+            status=status.HTTP_200_OK
+        )
 
 
 class SpendingDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Spending.objects.all()
     serializer_class = SpendingSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['user', 'name', 'price', 'category', 'date']
+    filterset_fields = ['name', 'price', 'category', 'date']
 
     def get_queryset(self):
         return Spending.objects.filter(user=self.request.user)
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        self.perform_destroy(instance)
+        return Response(
+            {"detail": "Трата успешно удалена"}, 
+            status=status.HTTP_200_OK
+        )

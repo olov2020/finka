@@ -3,5 +3,5 @@ from .views import ReminderCreateView, ReminderDetailView
 
 urlpatterns = [
     path('', ReminderCreateView.as_view()),
-    path('<int:pk>', ReminderDetailView.as_view()),
+    path('<int:pk>/', ReminderDetailView.as_view()),
 ]
