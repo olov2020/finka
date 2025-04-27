@@ -1,26 +1,26 @@
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "./_layout";
-import {BalanceItemProps} from "@/types/BalanceItemProps.type";
-import {changeBalanceByIdApi} from "@/api/balanceApi";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "./_layout";
+import { BalanceItemProps } from "@/types/BalanceItemProps.type";
+import { changeBalanceByIdApi, deleteBalanceByIdApi } from "@/api/balanceApi";
 
 type TransactionItemWithNavigationProps = BalanceItemProps & {
   navigation: StackNavigationProp<RootStackParamList, 'Balance'>;
 }
 
 export default function BalanceItem({
-                                      id,
-                                      name,
-                                      balance,
-                                      start_date,
-                                      end_date,
-                                      time,
-                                      navigation
-                                    }: TransactionItemWithNavigationProps) {
+  id,
+  name,
+  balance,
+  start_date,
+  end_date,
+  time,
+  navigation
+}: TransactionItemWithNavigationProps) {
   return (
     <TouchableOpacity onPress={() => {
       navigation.navigate('add-balance', {
-        title: 'Изменить остаток',
+        title: 'Изменить баланс',
         data: {
           id,
           name,
@@ -32,11 +32,11 @@ export default function BalanceItem({
         buttons: {
           left: {
             title: 'Сохранить',
-            onPress: changeBalanceByIdApi,
+            fetchData: changeBalanceByIdApi,
           },
           right: {
             title: 'Удалить',
-            onPress: () => navigation.goBack(),
+            fetchData: deleteBalanceByIdApi,
           },
         },
       });

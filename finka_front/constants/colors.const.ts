@@ -5,8 +5,8 @@
 
 export const ColorsConst = {
   light: {
-    text: 'white',
-    background: 'white',
+    text: 'black',
+    background: 'black',
   },
   dark: {
     text: 'white',

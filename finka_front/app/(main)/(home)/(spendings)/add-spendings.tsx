@@ -1,16 +1,16 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemedView } from '@/components/common/ThemedView';
 import { safeAreaViewStyle } from '@/constants/styles';
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList } from './_layout';
-import { Alert, StyleSheet, Text, TextInput, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import BlankCard from "@/components/common/BlankCard";
 import { themedTextStyle } from "@/constants/styles/themedTextStyle";
 import Button from "@/components/common/Button";
 import LabelWithValue from "@/components/common/LabelWithValue";
 import { SpendingsItemProps } from "@/types/SpendingsItemProps.type";
-import { router, useNavigation } from 'expo-router';
+import { useNavigation } from 'expo-router';
 
 type AddSpendingsViewProps = {
   route: RouteProp<RootStackParamList, 'add-spendings'>;

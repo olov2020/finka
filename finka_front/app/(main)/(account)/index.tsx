@@ -1,16 +1,18 @@
 import { ThemedView } from "@/components/common/ThemedView";
-import { SafeAreaView, StyleSheet, View } from "react-native";
+import { SafeAreaView, StyleSheet, View, Text } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { usePathname } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ThemedText } from "@/components/common/ThemedText";
 import BlankCard from "@/components/common/BlankCard";
 import { safeAreaViewStyle } from "@/constants/styles";
 import LabelWithValue from "@/components/common/LabelWithValue";
 import { AccountProps } from "@/types/AccountProps.type";
-import { changeAccountDataApi, getAccountDataApi } from "@/api/userApi";
+import { changeAccountDataApi, postHelpMessage } from "@/api/userApi";
 import Button from "@/components/common/Button";
 import { emailHandler } from "@/functioins/formHandler/emailHandler";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { router } from "expo-router";
+import { useRoute } from '@react-navigation/native';
 
 const LABELS = [
   {
@@ -25,13 +27,33 @@ const LABELS = [
     label: 'Почта',
     editable: true,
   },
-]
+];
+
+const HELP = [
+  {
+    label: 'Ссылка на телеграм',
+    editable: true,
+  },
+  {
+    label: 'Сообщение',
+    editable: true,
+  },
+];
+
+type HelpProps = {
+  tg: string,
+  message: string,
+};
 
 export default function AccountView() {
   const [userData, setUserData] = useState<AccountProps>({
     name: '',
     surname: '',
     email: '',
+  });
+  const [helpData, setHelpData] = useState<HelpProps>({
+    tg: '',
+    message: '',
   });
 
   const handleInputChange = (key: keyof AccountProps, value: string) => {
@@ -41,17 +63,49 @@ export default function AccountView() {
     }));
   };
 
-  const pathname = usePathname();
+  const handleHelpInputChange = (key: keyof HelpProps, value: string) => {
+    setHelpData((prevData) => ({
+      ...prevData,
+      [key]: value,
+    }));
+  };
 
-  // TODO: rewrite to getting data from access_token
+  const route = useRoute();
+
+  function manualParseJWT(token: string) {
+    try {
+      const parts = token.split('.');
+      if (parts.length !== 3) {
+        throw new Error("Invalid JWT format");
+      }
+
+      const payload = JSON.parse(atob(parts[1]));
+      return payload;
+    } catch (error) {
+      console.error("Error parsing JWT:", error);
+      return null;
+    }
+  }
+
   useEffect(() => {
     const getAccountDataFunc = async () => {
-      const data: AccountProps = await getAccountDataApi();
-      setUserData(data);
+      try {
+        const accessToken = await AsyncStorage.getItem('access');
+        if (accessToken) {
+          const tokenData = manualParseJWT(accessToken);
+          setUserData({
+            name: tokenData.name,
+            surname: tokenData.surname,
+            email: tokenData.email,
+          });
+        }
+      } catch {
+        router.replace("/(login)/(auth)");
+      }
     }
 
     getAccountDataFunc();
-  }, [pathname]);
+  }, [route]);
 
   const checkDataErrors = (type: string, value: string) => {
     switch (type) {
@@ -78,9 +132,26 @@ export default function AccountView() {
         alert(error);
       }
     }
-    const id = 0;
-    const data = await changeAccountDataApi(userData.email, userData.name, userData.surname, id);
+    const response = await changeAccountDataApi(userData.email, userData.name, userData.surname);
+    if (response) {
+      alert('Данные успешно изменены!');
+    } else {
+      alert('Что-то пошло не так, попробуйте позже.');
+    }
   };
+
+  const handleHelp = async () => {
+    const response = await postHelpMessage(helpData.message, helpData.tg);
+    if (response) {
+      alert('Сообщение успешно отправлено!');
+      setHelpData({
+        message: '',
+        tg: '',
+      });
+    } else {
+      alert('Что-то пошло не так, попробуйте позже.');
+    }
+  }
 
   return (
     <SafeAreaProvider>
@@ -105,7 +176,27 @@ export default function AccountView() {
               })}
             </View>
           </BlankCard>
-          <Button title="Изменить информацию" onPress={handleChangeData} />
+          <Button title="Изменить информацию" onPress={async () => await handleChangeData()} />
+          <BlankCard>
+            <Text>Оставить обратную связь</Text>
+            <View style={styles.formContainer}>
+              {HELP.map((label, index) => {
+                const key = Object.keys(helpData)[index] as keyof HelpProps;
+                if (helpData[key] !== undefined) {
+                  return (
+                    <LabelWithValue
+                      key={label.label}
+                      label={label.label}
+                      value={String(helpData[key])}
+                      editable={label.editable}
+                      onChangeText={(value) => handleHelpInputChange(key, value)}
+                    />
+                  );
+                }
+              })}
+            </View>
+            <Button title="Оставить сообщение" onPress={async () => await handleHelp()} />
+          </BlankCard>
         </SafeAreaView>
       </ThemedView>
     </SafeAreaProvider>

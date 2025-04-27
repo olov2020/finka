@@ -1,5 +1,5 @@
 import {ThemedView} from "@/components/common/ThemedView";
-import {StyleSheet, TextInput, Text, TouchableOpacity} from "react-native";
+import {TextInput, Text, TouchableOpacity} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {router} from "expo-router";
 import {useState} from "react";
@@ -90,8 +90,7 @@ export default function LoginView({navigation}: LoginProps) {
           </BlankCard>
           <Button
             title="Войти"
-            // onPress={handleLogin}
-            onPress={() => router.replace("/(main)/(home)")}
+            onPress={handleLogin}
           />
           <TouchableOpacity onPress={() => navigation.navigate('Register')}>
             <ThemedText>Зарегистрироваться</ThemedText>

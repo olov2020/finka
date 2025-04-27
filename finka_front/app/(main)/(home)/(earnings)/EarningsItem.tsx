@@ -1,25 +1,25 @@
-import {View, Text, StyleSheet, TouchableOpacity} from "react-native";
-import {StackNavigationProp} from "@react-navigation/stack";
-import {RootStackParamList} from "./_layout";
-import {EarningsItemProps} from "@/types/EarningsItemProps.type";
-import {changeEarningsByIdApi} from "@/api/earningsApi";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "./_layout";
+import { EarningsItemProps } from "@/types/EarningsItemProps.type";
+import { changeEarningsByIdApi, deleteEarningsByIdApi } from "@/api/earningsApi";
 
 type TransactionItemWithNavigationProps = EarningsItemProps & {
   navigation: StackNavigationProp<RootStackParamList, 'Earnings'>;
 }
 
 export default function EarningsItem({
-                                        id,
-                                        name,
-                                        earning,
-                                        date,
-                                        time,
-                                        navigation
-                                      }: TransactionItemWithNavigationProps) {
+  id,
+  name,
+  earning,
+  date,
+  time,
+  navigation
+}: TransactionItemWithNavigationProps) {
   return (
     <TouchableOpacity onPress={() => {
       navigation.navigate('add-earnings', {
-        title: 'Изменить траты',
+        title: 'Изменить заработок',
         data: {
           id,
           name,
@@ -30,11 +30,11 @@ export default function EarningsItem({
         buttons: {
           left: {
             title: 'Сохранить',
-            onPress: changeEarningsByIdApi,
+            fetchData: changeEarningsByIdApi,
           },
           right: {
             title: 'Удалить',
-            onPress: () => navigation.goBack(),
+            fetchData: deleteEarningsByIdApi,
           },
         },
       });

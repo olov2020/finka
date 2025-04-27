@@ -1,15 +1,16 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
 import {ThemedView} from '@/components/common/ThemedView';
 import {safeAreaViewStyle} from '@/constants/styles';
 import {RouteProp} from '@react-navigation/native';
 import {RootStackParamList} from './_layout';
-import {Alert, StyleSheet, Text, TextInput, View} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import BlankCard from "@/components/common/BlankCard";
 import {themedTextStyle} from "@/constants/styles/themedTextStyle";
 import Button from "@/components/common/Button";
 import LabelWithValue from "@/components/common/LabelWithValue";
 import {EarningsItemProps} from "@/types/EarningsItemProps.type";
+import { useNavigation } from 'expo-router';
 
 type AddEarningsViewProps = {
   route: RouteProp<RootStackParamList, 'add-earnings'>;
@@ -35,6 +36,7 @@ const LABELS = [
 
 export default function AddEarningsView({route}: AddEarningsViewProps) {
   const {title, buttons, data} = route.params;
+    const navigation = useNavigation();
 
   const [spendingData, setSpendingData] = React.useState<EarningsItemProps>({
     name: data?.name || '',
@@ -43,35 +45,56 @@ export default function AddEarningsView({route}: AddEarningsViewProps) {
     time: data?.time || undefined,
   });
 
-  const handlePress = async () => {
-    const response = await buttons.left.onPress({
-      id: data?.id,
-      name: spendingData.name,
-      earning: spendingData.earning,
-      date: spendingData.date,
-    });
-    if (response) {
-      Alert.alert(
-        'Успех',
-        'Новая трата успешно добавлена!',
-        [
-          {
-            text: 'Супер!',
-          },
-        ],
-        {cancelable: false}
-      );
-    } else {
-      Alert.alert(
-        'Упс...',
-        'Что-то пошло не так, попробуйте позже.',
-        [
-          {
-            text: 'Хорошо',
-          },
-        ],
-        {cancelable: false}
-      );
+  const handleLeftPress = async () => {
+    if (buttons.left.fetchData) {
+      const id = data?.id || '';
+      if (id) {
+        const response = await buttons.left.fetchData({
+          id: id,
+          name: spendingData.name,
+          earning: spendingData.earning,
+          date: spendingData.date,
+        });
+        if (response) {
+          alert('Заработок успешно изменен!');
+          navigation.navigate('Earnings');
+        } else {
+          alert('Что-то пошло не так, попробуйте позже.');
+        }
+      }
+      else {
+        const response = await buttons.left.fetchData({
+          name: spendingData.name,
+          earning: spendingData.earning,
+          date: spendingData.date,
+        });
+        if (response) {
+          alert('Новый заработок успешно добавлен!');
+          navigation.navigate('Earnings');
+        } else {
+          alert('Что-то пошло не так, попробуйте позже.')
+        }
+      }
+    }
+    if (buttons.left.onPress) {
+      buttons.left.onPress();
+    }
+  };
+
+  const handleRightPress = async () => {
+    if (buttons.right.fetchData) {
+      const response = await buttons.right.fetchData({
+        id: data.id,
+      });
+      if (response) {
+        alert('Заработок успешно удален!');
+        navigation.navigate('Earnings');
+      } else {
+        alert('Что-то пошло не так, попробуйте позже.');
+      }
+    }
+    if (buttons.right.onPress) {
+      buttons.right.onPress();
     }
   };
 
@@ -109,13 +132,13 @@ export default function AddEarningsView({route}: AddEarningsViewProps) {
             <View style={styles.buttonsContainer}>
               <Button
                 title={buttons.left.title}
-                onPress={handlePress}
+                onPress={handleLeftPress}
                 flex={1}
               />
               <Button
                 flex={1}
                 title={buttons.right.title}
-                onPress={buttons.right.onPress}
+                onPress={handleRightPress}
               />
             </View>
           </View>

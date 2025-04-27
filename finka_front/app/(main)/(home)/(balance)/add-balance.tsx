@@ -1,18 +1,18 @@
-import React, {useEffect} from 'react';
-import {SafeAreaProvider, SafeAreaView} from 'react-native-safe-area-context';
-import {ThemedView} from '@/components/common/ThemedView';
-import {safeAreaViewStyle} from '@/constants/styles';
-import {RouteProp} from '@react-navigation/native';
-import {RootStackParamList} from './_layout';
-import {Alert, StyleSheet, Text, TextInput, View} from "react-native";
+import React from 'react';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { ThemedView } from '@/components/common/ThemedView';
+import { safeAreaViewStyle } from '@/constants/styles';
+import { RouteProp } from '@react-navigation/native';
+import { RootStackParamList } from './_layout';
+import { StyleSheet, Text, View } from "react-native";
 import BlankCard from "@/components/common/BlankCard";
-import {themedTextStyle} from "@/constants/styles/themedTextStyle";
+import { themedTextStyle } from "@/constants/styles/themedTextStyle";
 import Button from "@/components/common/Button";
 import LabelWithValue from "@/components/common/LabelWithValue";
-import {SpendingsItemProps} from "@/types/SpendingsItemProps.type";
-import {BalanceItemProps} from "@/types/BalanceItemProps.type";
+import { BalanceItemProps } from "@/types/BalanceItemProps.type";
+import { useNavigation } from 'expo-router';
 
-type AddSpendingsViewProps = {
+type AddBalanceViewProps = {
   route: RouteProp<RootStackParamList, 'add-balance'>;
 };
 
@@ -38,8 +38,9 @@ const LABELS = [
   },
 ]
 
-export default function AddBalanceView({route}: AddSpendingsViewProps) {
-  const {title, buttons, data} = route.params;
+export default function AddBalanceView({ route }: AddBalanceViewProps) {
+  const { title, buttons, data } = route.params;
+  const navigation = useNavigation();
 
   const [spendingData, setSpendingData] = React.useState<BalanceItemProps>({
     name: data?.name || '',
@@ -49,36 +50,58 @@ export default function AddBalanceView({route}: AddSpendingsViewProps) {
     time: data?.time || undefined,
   });
 
-  const handlePress = async () => {
-    const response = await buttons.left.onPress({
-      id: data?.id,
-      name: spendingData.name,
-      balance: spendingData.balance,
-      start_date: spendingData.start_date,
-      end_date: spendingData.end_date,
-    });
-    if (response) {
-      Alert.alert(
-        'Успех',
-        'Новая трата успешно добавлена!',
-        [
-          {
-            text: 'Супер!',
-          },
-        ],
-        {cancelable: false}
-      );
-    } else {
-      Alert.alert(
-        'Упс...',
-        'Что-то пошло не так, попробуйте позже.',
-        [
-          {
-            text: 'Хорошо',
-          },
-        ],
-        {cancelable: false}
-      );
+  const handleLeftPress = async () => {
+    if (buttons.left.fetchData) {
+      const id = data?.id || '';
+      if (id) {
+        const response = await buttons.left.fetchData({
+          id: id,
+          name: spendingData.name,
+          balance: spendingData.balance,
+          start_date: spendingData.start_date,
+          end_date: spendingData.end_date,
+        });
+        if (response) {
+          alert('Остаток успешно изменен!');
+          navigation.navigate('Balance');
+        } else {
+          alert('Что-то пошло не так, попробуйте позже.');
+        }
+      }
+      else {
+        const response = await buttons.left.fetchData({
+          name: spendingData.name,
+          balance: spendingData.balance,
+          start_date: spendingData.start_date,
+          end_date: spendingData.end_date,
+        });
+        if (response) {
+          alert('Новый остаток успешно добавлен!');
+          navigation.navigate('Balance');
+        } else {
+          alert('Что-то пошло не так, попробуйте позже.')
+        }
+      }
+    }
+    if (buttons.left.onPress) {
+      buttons.left.onPress();
+    }
+  };
+
+  const handleRightPress = async () => {
+    if (buttons.right.fetchData) {
+      const response = await buttons.right.fetchData({
+        id: data.id,
+      });
+      if (response) {
+        alert('Остаток успешно удален!');
+        navigation.navigate('Balance');
+      } else {
+        alert('Что-то пошло не так, попробуйте позже.');
+      }
+    }
+    if (buttons.right.onPress) {
+      buttons.right.onPress();
     }
   };
 
@@ -116,13 +139,13 @@ export default function AddBalanceView({route}: AddSpendingsViewProps) {
             <View style={styles.buttonsContainer}>
               <Button
                 title={buttons.left.title}
-                onPress={handlePress}
+                onPress={handleLeftPress}
                 flex={1}
               />
               <Button
                 flex={1}
                 title={buttons.right.title}
-                onPress={buttons.right.onPress}
+                onPress={handleRightPress}
               />
             </View>
           </View>

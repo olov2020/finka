@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TextInput, StyleSheet} from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
 
 type LabelWithValueProps = {
   label: string;
@@ -9,23 +9,40 @@ type LabelWithValueProps = {
 };
 
 export default function LabelWithValue({
-                                         label,
-                                         value,
-                                         editable = false,
-                                         onChangeText,
-                                       }: LabelWithValueProps) {
+  label,
+  value,
+  editable = false,
+  onChangeText,
+}: LabelWithValueProps) {
+  const getTime = (value: string) => {
+    const date = new Date(value);
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const seconds = date.getUTCSeconds();
+    const timeString = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+    return timeString;
+  }
+
+  const checkFormat = (value: string) => {
+    const utcRegex = /^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d{1,3})?Z$/;
+    return utcRegex.test(value) ? getTime(value) : value;
+  }
+
   return (
     <View style={styles.container}>
       <Text>{label}</Text>
-      {editable ? (
-        <TextInput
-          style={styles.input}
-          value={value}
-          onChangeText={onChangeText}
-        />
-      ) : (
-        <Text>{value}</Text>
-      )}
+      {
+        editable ? (
+          <TextInput
+            style={styles.input}
+            value={value}
+            onChangeText={onChangeText}
+          />
+        ) : (
+          <Text>{checkFormat(value)}</Text>
+        )
+      }
     </View>
   );
 }

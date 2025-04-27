@@ -1,6 +1,5 @@
 import {Stack} from "expo-router";
 import React from "react";
-import {StyleSheet} from "react-native";
 
 export default function MainLayout() {
     return (
@@ -22,9 +21,3 @@ export default function MainLayout() {
         </Stack>
     );
 }
-
-const styles = StyleSheet.create({
-    headerButton: {
-        paddingHorizontal: 16,
-    },
-});
