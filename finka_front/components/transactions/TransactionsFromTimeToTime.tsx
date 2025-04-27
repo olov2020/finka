@@ -27,8 +27,8 @@ export default function TransactionsFromTimeToTime({
   const currentDate = new Date();
   const firstDateOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
   const [dates, setDates] = useState<Dates>({
-    date1: format(firstDateOfMonth, 'dd.MM.yyyy'),
-    date2: format(currentDate, 'dd.MM.yyyy'),
+    date1: format(firstDateOfMonth, 'yyyy-MM-dd'),
+    date2: format(currentDate, 'yyyy-MM-dd'),
   });
 
   const handlePress = async () => {
@@ -40,7 +40,8 @@ export default function TransactionsFromTimeToTime({
     if (!data) {
       alert("Попробуйте еще раз позже, что-то пошло не так...");
     } else {
-      setData(data);
+      setData(data.data);
+      data?.sum && setSum(data.sum);
     }
   };
 
@@ -55,7 +56,7 @@ export default function TransactionsFromTimeToTime({
         <TextInputMask
           type={'datetime'}
           options={{
-            format: 'DD.MM.YYYY',
+            format: 'YYYY-MM-DD',
           }}
           style={styles.input}
           value={dates.date1}
@@ -65,7 +66,7 @@ export default function TransactionsFromTimeToTime({
         <TextInputMask
           type={'datetime'}
           options={{
-            format: 'DD.MM.YYYY',
+            format: 'YYYY-MM-DD',
           }}
           style={styles.input}
           value={dates.date2}

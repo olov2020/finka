@@ -6,7 +6,7 @@ export const registrationApi = async (email: string, password: string) => {
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
-        const response = await $host.post(`/signup/`, formData, {
+        const response = await $host.post(`/account/register/`, formData, {
             headers: {
                 ContentType: "application/json",
             }
@@ -23,35 +23,19 @@ export const loginApi = async (email: string, password: string) => {
         const formData = new FormData();
         formData.append("email", email);
         formData.append("password", password);
-        const response = await $host.post(`/login/`, formData, {
+        const response = await $host.post(`/account/login/`, formData, {
             headers: {
                 ContentType: "application/json",
             }
         });
 
-        await AsyncStorage.setItem("access_token", response.data.access_token);
-        await AsyncStorage.setItem("refresh_token", response.data.refresh_token);
+        await AsyncStorage.setItem("access", response.data.access);
+        await AsyncStorage.setItem("refresh", response.data.refresh);
         return response.data;
     } catch (error) {
         throw new Error(error.message);
     }
 };
-
-export const forgotPasswordApi = async (email: string) => {
-    try {
-        const formData = new FormData();
-        formData.append("email", email);
-        const response = await $host.post(`/forgot-password/`, formData, {
-            headers: {
-                ContentType: "application/json",
-            }
-        });
-
-        return response.data;
-    } catch (error) {
-        throw new Error(error.message);
-    }
-}
 
 export const changeAccountDataApi = async (email: string, name: string, surname: string, id: number) => {
     try {

@@ -57,6 +57,7 @@ export default function LoginView({navigation}: LoginProps) {
       try {
           const data = await loginApi(userData.email, userData.password);
           alert('Вход успешно выполнен');
+          router.replace("/(main)/(home)");
       } catch (error) {
           alert(error);
       }

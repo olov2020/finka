@@ -1,5 +1,5 @@
 import {ThemedView} from "@/components/common/ThemedView";
-import {StyleSheet, Text, TextInput, TouchableOpacity} from "react-native";
+import {Text, TextInput, TouchableOpacity} from "react-native";
 import {SafeAreaProvider, SafeAreaView} from "react-native-safe-area-context";
 import {useState} from "react";
 import {emailHandler} from "@/functioins/formHandler/emailHandler";
@@ -66,6 +66,7 @@ export default function RegisterView({navigation}: RegisterProps) {
     try {
       const data = await registrationApi(userData.email, userData.password);
       alert('Регистрация прошла успешно!');
+      navigation.navigate('Login')
     } catch (error) {
       alert(error);
     }

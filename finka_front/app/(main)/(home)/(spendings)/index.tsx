@@ -3,7 +3,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { Text } from 'react-native';
 import { ThemedView } from '@/components/common/ThemedView';
 import TransactionsFromTimeToTime from '@/components/transactions/TransactionsFromTimeToTime';
-import { addSpendingsApi, getAllSpendingsApi, getSpendingsFromDatesApi } from '@/api/spendingsApi';
+import { addSpendingsApi, getAllSpendingsApi, getAnaliticsApi, getSpendingsFromDatesApi } from '@/api/spendingsApi';
 import Button from '@/components/common/Button';
 import ListOfSpendings from '@/app/(main)/(home)/(spendings)/ListOfSpendings';
 import { safeAreaViewStyle } from '@/constants/styles';
@@ -23,8 +23,9 @@ export type Dates = {
 }
 
 export default function SpendingsView({ navigation }: SpendingsViewProps) {
-  const [data, setData] = React.useState<SpendingsItemProps[]>();
-  const [sum, setSum] = useState('123');
+  const [data, setData] = useState<SpendingsItemProps[]>();
+  const [analytics, setAnalytics] = useState('');
+  const [sum, setSum] = useState('');
   const route  = useRoute();
 
   useEffect(() => {
@@ -35,13 +36,23 @@ export default function SpendingsView({ navigation }: SpendingsViewProps) {
     }
 
     getData();
-  }, [route, data]);
+  }, [route]);
+
+  useEffect(() => {
+    const getData = async () => {
+      const analytics = await getAnaliticsApi();
+      setAnalytics(analytics);
+    }
+
+    getData();
+  }, [data]);
 
   return (
     <SafeAreaProvider>
       <ThemedView>
         <SafeAreaView style={safeAreaViewStyle.safeAreaView}>
           <ThemedText fontSize={24}>Ваши траты</ThemedText>
+          <ThemedText fontSize={16}>Возможные траты за следующий месяц {analytics}</ThemedText>
           <TransactionsFromTimeToTime
             title="Траты"
             sum={sum}

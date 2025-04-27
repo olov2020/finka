@@ -12,15 +12,15 @@ export const $authHost = axios.create({
 // Function to refresh the access token
 const refreshAccessToken = async () => {
     try {
-        const refreshToken = AsyncStorage.getItem('refresh_token');
+        const refreshToken = await AsyncStorage.getItem('refresh');
 
-        const response = await $host.post('/refresh/', { refreshToken });
-        const { accessToken, newRefreshToken } = response.data;
+        const response = await $host.get(`/account/refresh_token/${refreshToken}/`);
+        const { access, refresh } = response.data;
 
-        AsyncStorage.setItem('access_token', accessToken);
-        AsyncStorage.setItem('refresh_token', newRefreshToken);
+        await AsyncStorage.setItem('access', access);
+        await AsyncStorage.setItem('refresh', refresh);
 
-        return accessToken;
+        return access;
     } catch (error) {
         console.error('Error refreshing access token:', error);
         throw error;
@@ -29,7 +29,7 @@ const refreshAccessToken = async () => {
 
 $authHost.interceptors.request.use(
     async (config) => {
-        const accessToken = AsyncStorage.getItem('access_token');
+        const accessToken = await AsyncStorage.getItem('access');
         if (accessToken) {
             config.headers.Authorization = `Bearer ${accessToken}`;
         }

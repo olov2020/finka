@@ -10,6 +10,7 @@ import { themedTextStyle } from "@/constants/styles/themedTextStyle";
 import Button from "@/components/common/Button";
 import LabelWithValue from "@/components/common/LabelWithValue";
 import { SpendingsItemProps } from "@/types/SpendingsItemProps.type";
+import { router, useNavigation } from 'expo-router';
 
 type AddSpendingsViewProps = {
   route: RouteProp<RootStackParamList, 'add-spendings'>;
@@ -39,6 +40,7 @@ const LABELS = [
 
 export default function AddSpendingsView({ route }: AddSpendingsViewProps) {
   const { title, buttons, data } = route.params;
+  const navigation = useNavigation();
 
   const [spendingData, setSpendingData] = React.useState<SpendingsItemProps>({
     name: data?.name || '',
@@ -60,7 +62,8 @@ export default function AddSpendingsView({ route }: AddSpendingsViewProps) {
           date: spendingData.date,
         });
         if (response) {
-          alert('Новая трата успешно изменена!');
+          alert('Трата успешно изменена!');
+          navigation.navigate('Spendings');
         } else {
           alert('Что-то пошло не так, попробуйте позже.');
         }
@@ -74,6 +77,7 @@ export default function AddSpendingsView({ route }: AddSpendingsViewProps) {
         });
         if (response) {
           alert('Новая трата успешно добавлена!');
+          navigation.navigate('Spendings');
         } else {
           alert('Что-то пошло не так, попробуйте позже.')
         }
@@ -87,10 +91,11 @@ export default function AddSpendingsView({ route }: AddSpendingsViewProps) {
   const handleRightPress = async () => {
     if (buttons.right.fetchData) {
       const response = await buttons.right.fetchData({
-        id: data?.id,
+        id: data.id,
       });
       if (response) {
         alert('Трата успешно удалена!');
+        navigation.navigate('Spendings');
       } else {
         alert('Что-то пошло не так, попробуйте позже.');
       }
